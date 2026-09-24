@@ -124,38 +124,40 @@ details.ctl summary::before{content:"▸ "} details.ctl[open] summary::before{co
 
 /* ---- MOBILE RESPONSIVE ---- */
 @media(max-width:768px){
-  body{overflow:auto;font-size:13px}
-  .app{height:auto;min-height:100vh;grid-template-rows:auto auto auto}
-  header{flex-wrap:wrap;padding:8px 10px;gap:8px}
-  .logo{font-size:16px;letter-spacing:2px}
-  .logo .small{display:none}
-  .stats{gap:4px;flex-wrap:wrap;justify-content:center;width:100%;margin-left:0}
-  .stat{padding:3px 6px;min-width:50px}
-  .stat .v{font-size:13px}
-  .stat .k{font-size:8px}
-  .grid{grid-template-columns:1fr !important;padding:6px;gap:8px}
-  .left{order:2}
-  .right{order:1}
-  .card{padding:10px;border-radius:10px}
-  .card h2{font-size:10px}
-  #chatCard{min-height:200px}
-  .msg{font-size:12px;max-width:98%}
-  textarea,input,select{font-size:16px !important;padding:8px !important}
-  button{padding:10px 14px !important;font-size:14px !important}
-  .grid .right .card{overflow-x:auto}
-  #final{font-size:12px}
-  .md h1{font-size:1.2em}
-  .md h2{font-size:1.05em}
-  .md table{font-size:.8em}
-  .presets{flex-wrap:wrap;gap:4px}
-  .presets span{font-size:11px;padding:4px 8px}
-  #goal{min-height:60px}
-  .tabs{gap:4px}
-  .tab{padding:6px 10px;font-size:12px}
+  body{overflow:auto!important;font-size:13px!important;overflow-x:hidden!important}
+  .app{height:auto!important;min-height:100vh!important;display:flex!important;flex-direction:column!important}
+  header{flex-wrap:wrap!important;padding:8px 10px!important;gap:6px!important;flex-direction:column!important;align-items:flex-start!important}
+  .logo{font-size:14px!important;letter-spacing:2px!important}
+  .logo .small{display:none!important}
+  .stats{gap:3px!important;flex-wrap:wrap!important;justify-content:flex-start!important;width:100%!important;margin-left:0!important}
+  .stat{padding:2px 5px!important;min-width:40px!important}
+  .stat .v{font-size:11px!important}
+  .stat .k{font-size:7px!important}
+  .grid{display:flex!important;flex-direction:column!important;padding:6px!important;gap:8px!important}
+  .left{display:flex!important;flex-direction:column!important;gap:8px!important;order:2!important}
+  .right{order:1!important}
+  .card{padding:8px!important;border-radius:8px!important}
+  .card h2{font-size:9px!important}
+  #chatCard{min-height:150px!important}
+  .msg{font-size:11px!important;max-width:98%!important}
+  textarea,input,select{font-size:16px!important;padding:6px!important;width:100%!important;box-sizing:border-box!important}
+  button{padding:8px 12px!important;font-size:13px!important}
+  #final{font-size:11px!important}
+  .md h1{font-size:1.1em!important}
+  .md h2{font-size:1em!important}
+  .md table{font-size:.75em!important}
+  .presets{flex-wrap:wrap!important;gap:3px!important}
+  .presets span{font-size:10px!important;padding:3px 6px!important}
+  #goal{min-height:50px!important}
+  .tabs{gap:3px!important;flex-wrap:wrap!important}
+  .tab{padding:5px 8px!important;font-size:11px!important}
+  .brain-layout{display:flex!important;flex-direction:column!important}
+  .brainviz{min-height:200px!important}
+  .feedhint{display:none!important}
 }
 @media(max-width:480px){
-  .stats .stat:nth-child(n+5){display:none}
-  .logo span.small{display:none}
+  .stats .stat:nth-child(n+4){display:none!important}
+  .logo .small{display:none!important}
 }
 </style>
 </head>

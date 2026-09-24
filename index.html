@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIVE — Neural AI Swarm</title>
+<style>
+:root{--bg:#04060c;--p:#0b101c;--p2:#111829;--line:#1a2440;--txt:#dbe4ff;--mute:#7483ab;--acc:#ffb72b;--cy:#3ee6ff;--mg:#c05cff;--ok:#5cff9d;--bad:#ff5c7a}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--txt);font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
+#bgfx{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(900px 500px at 70% 0%,#1a0f3d55,transparent 70%),radial-gradient(800px 500px at 0% 100%,#06303a55,transparent 70%)}
+.app{position:relative;z-index:1;display:grid;grid-template-rows:auto 1fr;height:100vh}
+header{display:flex;align-items:center;gap:16px;padding:10px 18px;border-bottom:1px solid var(--line);background:#060912cc;backdrop-filter:blur(6px)}
+.logo{font-weight:800;letter-spacing:4px;font-size:20px;display:flex;align-items:center;gap:8px}
+.logo b{color:var(--acc)} .logo .dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:blink 2s infinite}
+@keyframes blink{50%{opacity:.35}}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+.stat{background:var(--p);border:1px solid var(--line);border-radius:10px;padding:4px 10px;min-width:74px;text-align:center}
+.stat .v{font:700 16px ui-monospace,Consolas,monospace;color:var(--cy)} .stat .k{font-size:10px;color:var(--mute);text-transform:uppercase;letter-spacing:1px}
+.stat.g .v{color:var(--ok)} .stat.a .v{color:var(--acc)} .stat.m .v{color:var(--mg)}
+.grid{display:grid;grid-template-columns:380px 1fr;gap:12px;padding:12px;min-height:0}
+@media(max-width:1050px){body{overflow:auto}.app{height:auto}.grid{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,var(--p),#080c16);border:1px solid var(--line);border-radius:14px;padding:12px;min-height:0}
+.card h2{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mute);display:flex;align-items:center;gap:8px}
+.left{display:flex;flex-direction:column;gap:12px;min-height:0}
+/* chat */
+#chatCard{flex:1;display:flex;flex-direction:column;min-height:260px;overflow:hidden}
+#chat{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:2px 4px 2px 0;scrollbar-width:thin}
+.msg{padding:9px 11px;border-radius:12px;max-width:94%;font-size:13.5px}
+.msg.u{align-self:flex-end;background:#2a1d05;border:1px solid #5a3d08}
+.msg.b{align-self:flex-start;background:var(--p2);border:1px solid var(--line)}
+.msg.b .who{font-size:11px;color:var(--acc);font-weight:700;margin-bottom:2px}
+.launch{margin-top:6px;padding:7px 9px;border-radius:9px;background:#0a2230;border:1px solid #145066;font-size:12px;cursor:pointer}
+.launch:hover{border-color:var(--cy)}
+.typing span{display:inline-block;width:6px;height:6px;margin:0 2px;border-radius:50%;background:var(--acc);animation:ty 1s infinite}
+.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+@keyframes ty{50%{transform:translateY(-5px);opacity:.4}}
+.chatin{display:flex;gap:6px;margin-top:8px}
+textarea,input,select{width:100%;background:#070b14;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px;font:inherit}
+textarea{resize:none}
+button{cursor:pointer;border:0;border-radius:10px;padding:9px 13px;font:600 13px system-ui;color:#1b1200;background:linear-gradient(90deg,var(--acc),#ff8a2b);white-space:nowrap}
+button.sec{background:var(--p2);color:var(--txt);border:1px solid var(--line)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chips span{font-size:11.5px;background:var(--p2);border:1px solid var(--line);padding:3px 8px;border-radius:99px;cursor:pointer;color:var(--mute)}
+#cchips{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding:2px 0 5px;scrollbar-width:thin}
+#cchips span{white-space:nowrap;flex:0 0 auto;font-size:10.5px}
+#presets span{white-space:nowrap}
+.sourceCard{background:var(--p2);border:1px solid var(--line);border-radius:11px;padding:10px;min-width:0}
+.sourceCard .srcTop{display:flex;gap:8px;align-items:flex-start}
+.sourceCard .srcTitle{font-weight:700;line-height:1.3;text-decoration:none;color:#dbe4ff}
+.sourceCard .srcTitle:hover{color:var(--cy)}
+.sourceCard .srcMeta{font-size:10px;color:var(--mute);margin:5px 0}
+.sourceCard .srcSnippet{font-size:12px;color:#aab6d8;line-height:1.45}
+.sourceCard details{margin-top:7px;color:#98a7ca;font-size:11px}
+.sourceCard details summary{cursor:pointer;color:var(--cy)}
+.chips span:hover{color:var(--acc);border-color:var(--acc)}
+details.ctl summary{cursor:pointer;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mute);list-style:none}
+details.ctl summary::before{content:"▸ "} details.ctl[open] summary::before{content:"▾ "}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px} label{display:block;font-size:11px;color:var(--mute);margin:8px 0 3px}
+/* brain */
+.right{display:grid;grid-template-rows:minmax(300px,52%) 1fr;gap:12px;min-height:0}
+#brainCard{position:relative;padding:0;overflow:hidden;display:flex;flex-direction:column}
+.brain-layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:0;min-height:0;flex:1;padding-top:43px}
+.brainviz{position:relative;min-width:0;min-height:0;overflow:hidden;border-right:1px solid var(--line)}
+#brain{width:100%;height:100%;display:block}
+.phases{position:absolute;z-index:2;top:9px;left:10px;right:10px;display:flex;gap:5px;flex-wrap:nowrap;pointer-events:none}
+.ph{flex:1;min-width:65px;text-align:center;font-size:10.5px;padding:5px 3px;border-radius:8px;background:#060a14eF;border:1px solid var(--line);color:var(--mute);white-space:nowrap}
+.ph.on{border-color:var(--acc);color:var(--acc);box-shadow:0 0 14px #ffb72b44}.ph.done{border-color:#1f5c3a;color:var(--ok)}
+.legend{position:absolute;bottom:8px;left:12px;font-size:10.5px;color:var(--mute);display:flex;gap:10px;pointer-events:none}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+#mtitle{position:absolute;bottom:8px;right:10px;font-size:11px;color:#aab6d8;max-width:50%;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+#tip{position:absolute;pointer-events:none;background:#070b14f2;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:12px;display:none;max-width:260px;z-index:5;box-shadow:0 12px 28px #0008}
+.intel-feed{min-width:0;min-height:0;display:flex;flex-direction:column;background:linear-gradient(180deg,#090e19,#080b13);padding:10px;overflow:hidden}
+.feedhead{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:1.4px;font-weight:800;color:var(--cy);text-transform:uppercase}
+.livebadge{margin-left:auto;border:1px solid #17553e;color:var(--ok);background:#072015;border-radius:99px;padding:2px 7px;font-size:9px;letter-spacing:1px}
+.feedhint{font-size:10.5px;color:var(--mute);margin:4px 0 7px}
+#queryList{display:flex;flex-direction:column;gap:5px;max-height:92px;overflow:auto;margin-bottom:7px}
+.qrow{font-size:10.5px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:#0d1423;color:#b7c4e6}
+.qrow .qmeta{display:flex;justify-content:space-between;color:var(--mute);font-size:9.5px;margin-top:2px}
+.qrow.searching{border-color:#174c5a;animation:scanGlow 1.8s infinite}
+@keyframes scanGlow{50%{box-shadow:0 0 13px #3ee6ff22}}
+.feedlabel{font-size:9px;color:var(--mute);text-transform:uppercase;letter-spacing:1.2px;margin:0 0 5px}
+#evidenceFeed{min-height:0;flex:1;overflow:auto;display:flex;flex-direction:column;gap:6px;padding-right:2px}
+.evcard{position:relative;border:1px solid var(--line);border-radius:8px;padding:7px 8px;background:#0b1120;animation:arrive .35s ease-out}
+@keyframes arrive{from{opacity:0;transform:translateX(15px)}to{opacity:1;transform:none}}
+.evcard.read{border-left:2px solid var(--ok)}.evcard.reading{border-left:2px solid var(--acc);animation:scanGlow 1.5s infinite}.evcard.failed{border-left:2px solid var(--bad)}
+.evcard .evtitle{font-weight:650;font-size:11px;line-height:1.3;display:block;color:#d8e3ff;text-decoration:none}
+.evcard .evtitle:hover{color:var(--cy)}.evcard .evsnippet{color:#8998bc;font-size:10px;line-height:1.35;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.evcard .evmeta{font-size:9px;color:var(--mute);margin-top:4px;display:flex;justify-content:space-between;gap:4px}
+.feedempty{margin:auto 0;text-align:center;color:var(--mute);font-size:11px;padding:18px 8px;border:1px dashed #273252;border-radius:8px}
+.feedfoot{font-size:9.5px;color:var(--mute);border-top:1px solid var(--line);margin-top:6px;padding-top:6px}
+@media(max-width:900px){.brain-layout{grid-template-columns:minmax(0,1fr) 280px}}
+@media(max-width:680px){.brain-layout{grid-template-columns:1fr;grid-template-rows:minmax(300px,1fr) 220px}.brainviz{border-right:0;border-bottom:1px solid var(--line)}.ph{font-size:9px;min-width:0}.phases{gap:3px;left:5px;right:5px}.ph{white-space:normal}.feedhint{display:none}}
+/* tabs */
+#tabsCard{display:flex;flex-direction:column}
+.tabs{display:flex;gap:4px;margin-bottom:8px;align-items:center}
+.tab{padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;color:var(--mute);border:1px solid transparent}
+.tab.on{color:var(--acc);border-color:var(--line);background:var(--p2)}
+.tabs .sp{margin-left:auto;display:flex;gap:6px}
+.pane{flex:1;overflow:auto;display:none;min-height:0}.pane.on{display:block}
+.agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.agent{background:var(--p2);border:1px solid var(--line);border-radius:12px;padding:10px;max-height:360px;display:flex;flex-direction:column}
+.agent.sub{border-color:#3b2360;background:#140f22}
+.agent .top{display:flex;align-items:center;gap:8px}.agent .emo{font-size:20px}.agent .nm{font-weight:700}
+.agent .rl{font-size:11px;color:var(--mute)}
+.st{margin-left:auto;font-size:10.5px;padding:2px 8px;border-radius:99px;background:#070b14;color:var(--mute)}
+.st.working{color:var(--acc);animation:blink 1s infinite}.st.researching{color:var(--cy);animation:blink 1s infinite}.st.done{color:var(--ok)}.st.error{color:var(--bad)}
+.agent .task{font-size:11.5px;color:#aab6d8;margin:6px 0;border-left:2px solid var(--acc);padding-left:7px}
+.agent.sub .task{border-color:var(--mg)}
+.agent .out{overflow:auto;font-size:12.5px;flex:1}
+#log{font:12px/1.5 ui-monospace,Consolas,monospace;color:var(--mute);white-space:pre-wrap}
+#log .e{color:var(--bad)}#log .g{color:var(--ok)}#log .a{color:var(--acc)}
+.hist{padding:9px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;cursor:pointer;background:var(--p2)}
+.hist:hover{border-color:var(--acc)} .hist .d{font-size:11px;color:var(--mute)}
+.md h1,.md h2,.md h3{margin:.8em 0 .3em;line-height:1.25}.md h1{font-size:1.45em}.md h2{font-size:1.2em;color:var(--acc)}.md h3{font-size:1.05em;color:var(--cy)}
+.md code{background:#070b14;padding:1px 5px;border-radius:5px;font-family:ui-monospace,Consolas,monospace;font-size:.92em}
+.md pre{background:#070b14;border:1px solid var(--line);padding:10px;border-radius:8px;overflow:auto}.md pre code{background:none;padding:0}
+.md table{border-collapse:collapse;margin:.5em 0;font-size:.95em}.md td,.md th{border:1px solid var(--line);padding:4px 8px}
+.md blockquote{border-left:3px solid var(--cy);margin:.5em 0;padding-left:10px;color:#aab6d8}.md a{color:var(--cy)}
+#final:empty::before{content:"The swarm's final report appears here — ask Commander or launch a mission.";color:var(--mute)}
+.small{font-size:11.5px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div id="bgfx"></div>
+<div class="app">
+<header>
+  <div class="logo"><span class="dot"></span>H<b>I</b>VE <span class="small" style="letter-spacing:1px;font-weight:400">keyless free tier · public sources · 1 AI lane</span></div>
+  <div class="stats">
+    <div class="stat"><div class="v" id="sAgents">0</div><div class="k">agents</div></div>
+    <div class="stat m"><div class="v" id="sSubs">0</div><div class="k">sub‑swarms</div></div>
+    <div class="stat"><div class="v" id="sSources">0</div><div class="k">web results</div></div>
+    <div class="stat"><div class="v" id="sRead">0</div><div class="k">pages read</div></div>
+    <div class="stat g" title="Automated numeric-token matches in cited source text; not proof the claim is true"><div class="v" id="sVerified">N/A</div><div class="k">matched*</div></div>
+    <div class="stat a"><div class="v" id="sCalls">0</div><div class="k">AI calls</div></div>
+    <div class="stat"><div class="v" id="sCalcs">0</div><div class="k">calcs</div></div>
+    <div class="stat"><div class="v" id="sTime">0s</div><div class="k">elapsed</div></div>
+  </div>
+</header>
+
+<div class="grid">
+  <div class="left">
+    <div class="card" id="chatCard">
+      <h2>🧠 Commander <span class="small" style="text-transform:none;letter-spacing:0">— talk to the Hive. It launches swarms for you.</span></h2>
+      <div id="chat"></div>
+      <div class="chips" id="cchips"></div>
+      <div class="chatin">
+        <textarea id="cin" rows="3" placeholder="Ask Commander or describe a mission…"></textarea>
+        <button id="csend">Send</button>
+      </div>
+    </div>
+    <div class="card">
+      <details class="ctl" id="ctl">
+        <summary>Manual mission control</summary>
+        <textarea id="goal" rows="3" style="margin-top:8px" placeholder="Mission for the swarm…"></textarea>
+        <div class="chips" id="presets"></div>
+        <div class="row">
+          <div><label>Swarm size</label><select id="size"><option>3</option><option selected>5</option><option>8</option><option>12</option><option>20</option><option>30</option><option>40</option><option>50</option></select></div>
+          <div><label>Depth</label><select id="depth"><option value="fast">⚡ Fast</option><option value="accurate" selected>🎯 Accurate</option><option value="max">🧠 Max (sub‑swarms)</option></select></div>
+        </div>
+        <div class="row">
+          <div><label>Mode</label><select id="mode"><option value="money">💰 AI money‑making</option><option value="team">Expert team</option><option value="research">Research lab</option><option value="osint">🌐 Public-source intel</option><option value="security">🛡 Defensive cyber</option><option value="debate">Debate</option><option value="code">Software squad</option></select></div>
+          <div><label>Output</label><select id="style"><option value="actionable">Action plan</option><option value="detailed">Detailed report</option><option value="concise">Concise</option></select></div>
+        </div>
+        <div class="row">
+          <div><label>Critic rounds</label><select id="rounds"><option value="0">0</option><option value="1" selected>1</option><option value="2">2</option></select></div>
+          <div><label>Web research</label><select id="web"><option value="1" selected>🌐 On</option><option value="0">Off</option></select></div>
+        </div>
+        <div class="small" id="eta" style="margin-top:6px"></div>
+        <div style="display:flex;gap:6px;margin-top:8px"><button id="run" style="flex:1">🚀 Launch swarm</button><button id="stop" class="sec" disabled>■ Stop</button></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="card" id="brainCard">
+      <div class="phases">
+        <div class="ph" data-p="plan">👑 Scout & plan</div><div class="ph" data-p="work">🐝 Research & build</div>
+        <div class="ph" data-p="critic">🔍 Critic</div><div class="ph" data-p="refine">♻ Refine</div>
+        <div class="ph" data-p="synth">🧬 Synthesize</div><div class="ph" data-p="verify">🔬 Fact‑check</div>
+      </div>
+      <div class="brain-layout">
+        <div class="brainviz">
+          <canvas id="brain"></canvas>
+          <div class="legend"><span><i style="background:#3ee6ff"></i>researching</span><span><i style="background:#ffb72b"></i>working</span><span><i style="background:#5cff9d"></i>done</span><span><i style="background:#c05cff"></i>helper swarm</span></div>
+          <div id="mtitle">Idle · waiting for a mission</div><div id="tip"></div>
+        </div>
+        <aside class="intel-feed">
+          <div class="feedhead">🌐 Live evidence <span class="livebadge" id="liveState">STANDBY</span></div>
+          <div class="feedhint">Real web results and opened pages · result pages may be publisher-direct or an RSS link</div>
+          <div id="queryList"><div class="qrow">No search yet <div class="qmeta"><span>Waiting for mission</span><span>—</span></div></div></div>
+          <div class="feedlabel">Latest items collected</div>
+          <div id="evidenceFeed"><div class="feedempty">Search queries, source snippets and page reads will stream here as they happen.</div></div>
+          <div class="feedfoot" id="feedFoot">0 results · 0 pages opened · verified math appears in the Report</div>
+        </aside>
+      </div>
+    </div>
+    <div class="card" id="tabsCard">
+      <div class="tabs">
+        <div class="tab on" data-t="final">📄 Report</div><div class="tab" data-t="agents">🐝 Agents <span id="agCount"></span></div>
+        <div class="tab" data-t="sources">🔎 Evidence <span id="srcCount"></span></div><div class="tab" data-t="log">📡 Log</div><div class="tab" data-t="hist">🗂 Memory</div>
+        <div class="sp"><button class="sec" id="copy" style="padding:4px 10px;font-size:11px">Copy</button><button class="sec" id="dl" style="padding:4px 10px;font-size:11px">Download .md</button></div>
+      </div>
+      <div class="pane on md" id="p-final"><div id="final"></div></div>
+      <div class="pane" id="p-agents"><div class="agents" id="agents"></div></div>
+      <div class="pane" id="p-sources">
+        <div style="display:flex;gap:7px;align-items:center;margin:0 0 8px">
+          <input id="sourceFilter" placeholder="Filter by title, URL or search query…" style="max-width:440px;padding:7px 9px">
+          <select id="sourceKind" style="width:150px;padding:7px 8px"><option value="all">All evidence</option><option value="read">Page opened</option><option value="result">Search result</option><option value="official">Official API</option></select>
+          <span class="small" id="sourceSummary"></span>
+        </div>
+        <div class="small" style="margin-bottom:8px">Provenance is visible: search engine, query, collection time, confidence heuristic, and whether HIVE actually opened the page. A result count is not a count of pages read.</div>
+        <div id="sourceList" class="agents"></div>
+      </div>
+      <div class="pane" id="p-log"><div id="log"></div></div>
+      <div class="pane" id="p-hist"><div class="small" style="margin-bottom:9px">Memory learns only from saved run topics and evidence/verification metrics to reduce repetition and steer future plans. It does not retrain model weights or turn old generated claims into facts.</div><div id="hist"></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let agents=[], SOURCES=[], SEARCHES=[], FINAL="", CUR=null, t0=0, running=false, chatMsgs=[], lastStats={};
+
+/* ---------------- markdown ---------------- */
+function md(src){
+  src=(src||"").replace(/\r/g,""); const B=[];
+  src=src.replace(/```(\w*)\n([\s\S]*?)```/g,(m,l,c)=>{B.push(`<pre><code>${esc(c)}</code></pre>`);return `\u0000${B.length-1}\u0000`});
+  const il=t=>esc(t).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>").replace(/(^|[^*])\*([^*\n]+)\*/g,"$1<i>$2</i>")
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  const o=[];let L=null,T=null;const cl=()=>{if(L){o.push(`</${L}>`);L=null}},ct=()=>{if(T){o.push("</table>");T=null}};
+  for(const ln of src.split("\n")){let m;
+    if(/^\u0000\d+\u0000$/.test(ln.trim())){cl();ct();o.push(B[+ln.trim().slice(1,-1)]);continue}
+    if(/^\s*\|.*\|\s*$/.test(ln)){cl();if(/^\s*\|[\s:\-|]+\|\s*$/.test(ln))continue;const c=ln.trim().slice(1,-1).split("|").map(x=>il(x.trim()));
+      if(!T){T=1;o.push("<table><tr>"+c.map(x=>`<th>${x}</th>`).join("")+"</tr>")}else o.push("<tr>"+c.map(x=>`<td>${x}</td>`).join("")+"</tr>");continue}
+    ct();
+    if(m=ln.match(/^(#{1,6})\s+(.*)/)){cl();const n=Math.min(m[1].length,3);o.push(`<h${n}>${il(m[2])}</h${n}>`)}
+    else if(m=ln.match(/^\s*[-*+]\s+(.*)/)){if(L!=="ul"){cl();L="ul";o.push("<ul>")}o.push(`<li>${il(m[1])}</li>`)}
+    else if(m=ln.match(/^\s*\d+[.)]\s+(.*)/)){if(L!=="ol"){cl();L="ol";o.push("<ol>")}o.push(`<li>${il(m[1])}</li>`)}
+    else if(m=ln.match(/^>\s?(.*)/)){cl();o.push(`<blockquote>${il(m[1])}</blockquote>`)}
+    else if(/^\s*(---|\*\*\*)\s*$/.test(ln)){cl();o.push("<hr>")}
+    else if(!ln.trim())cl();else{cl();o.push(`<p>${il(ln)}</p>`)}}
+  cl();ct();return o.join("\n");
+}
+
+/* ---------------- neural brain (canvas) ---------------- */
+const cv=$("#brain"), ctx=cv.getContext("2d"); let W=0,H=0,DPR=1;
+function resize(){const r=cv.getBoundingClientRect();DPR=window.devicePixelRatio||1;W=r.width;H=r.height;cv.width=Math.max(1,W*DPR);cv.height=Math.max(1,H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);layout()}
+window.addEventListener("resize",resize);
+const COL={queued:[70,90,140],researching:[62,230,255],working:[255,183,43],done:[92,255,157],error:[255,92,122]};
+const ambient=[]; for(let i=0;i<95;i++) ambient.push({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.00025,vy:(Math.random()-.5)*.00025,r:Math.random()*1.6+.4});
+let neurons=[], pulses=[], flows=[], core={x:0,y:0,fire:0}, gate={x:0,y:0}, phaseName="idle";
+function layout(){
+  core.x=W*.62; core.y=H*.54; gate.x=Math.max(32,W*.065); gate.y=H*.51;
+  const mains=agents.map((a,i)=>({a,i})).filter(o=>o.a.parent==null);
+  const n=mains.length, R=Math.min(W*.30,H*.40);
+  mains.forEach((o,k)=>{
+    const t=(k+.5)/Math.max(n,1), ang=k*2.39996+.3, rad=R*(.47+.53*Math.sqrt(t));
+    setN(o.i,core.x+Math.cos(ang)*rad,core.y+Math.sin(ang)*rad*.72);
+  });
+  agents.forEach((a,i)=>{if(a.parent!=null){
+    const p=neurons[a.parent]||core,sibs=agents.filter(b=>b.parent===a.parent),k=sibs.indexOf(a),base=Math.atan2(p.y-core.y,p.x-core.x),ang=base+(k-(sibs.length-1)/2)*.7;
+    setN(i,p.x+Math.cos(ang)*40,p.y+Math.sin(ang)*34);
+  }});
+}
+function setN(i,x,y){if(!neurons[i])neurons[i]={x:core.x,y:core.y,tx:x,ty:y,fire:0,ph:Math.random()*6};else{neurons[i].tx=x;neurons[i].ty=y}}
+function fire(i){const n=i<0?core:neurons[i];if(!n)return;n.fire=1;
+  if(i>=0){const a=agents[i],src=a.parent!=null?neurons[a.parent]:core;if(src)pulses.push({a:src,b:n,q:n,t:0,sp:.013+Math.random()*.008,c:COL[a.status]||COL.working})}}
+function flow(src){flows.push({owner_i:src.owner_i??-1,stage:src.stage||"found",kind:src.kind||"web",t:0,age:0});if(flows.length>120)flows.splice(0,flows.length-120)}
+function rgba(c,a){return `rgba(${c[0]},${c[1]},${c[2]},${a})`}
+function draw(ts){
+  if(!W||!H){requestAnimationFrame(draw);return}
+  ctx.clearRect(0,0,W,H);
+  ambient.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>1)p.vx*=-1;if(p.y<0||p.y>1)p.vy*=-1});
+  for(let i=0;i<ambient.length;i++){const a=ambient[i],ax=a.x*W,ay=a.y*H;
+    for(let j=i+1;j<ambient.length;j++){const b=ambient[j],dx=ax-b.x*W,dy=ay-b.y*H,d=dx*dx+dy*dy;if(d<4400){ctx.strokeStyle=`rgba(80,110,190,${.08*(1-d/4400)})`;ctx.lineWidth=.6;ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(b.x*W,b.y*H);ctx.stroke()}}
+    ctx.fillStyle="rgba(120,150,230,.32)";ctx.beginPath();ctx.arc(ax,ay,a.r,0,Math.PI*2);ctx.fill()}
+  if(running&&Math.random()<.055){const a=ambient[Math.floor(Math.random()*ambient.length)],b=ambient[Math.floor(Math.random()*ambient.length)];pulses.push({a:{x:a.x*W,y:a.y*H},b:{x:b.x*W,y:b.y*H},t:0,sp:.018,c:[110,140,245],amb:1})}
+  neurons.forEach(n=>{if(!n)return;n.x+=(n.tx-n.x)*.065;n.y+=(n.ty-n.y)*.065;n.fire*=.95});core.fire*=.95;
+  // visible internet-to-queen trunk, with a scan beam while queries are running
+  const searching=SEARCHES.some(q=>q.stage==="searching");
+  ctx.save();ctx.beginPath();ctx.moveTo(gate.x+18,gate.y);ctx.quadraticCurveTo((gate.x+core.x)/2,gate.y-38,core.x-29,core.y);
+  ctx.strokeStyle=searching?"rgba(62,230,255,.55)":"rgba(62,230,255,.18)";ctx.lineWidth=searching?2:1;ctx.setLineDash(searching?[5,7]:[]);ctx.lineDashOffset=-ts/55;ctx.stroke();ctx.restore();
+  // ordinary agent synapses
+  agents.forEach((a,i)=>{const n=neurons[i];if(!n)return;const src=a.parent!=null?neurons[a.parent]:core;if(!src)return;
+    const c=a.parent!=null?[192,92,255]:(COL[a.status]||COL.queued),act=a.status==="working"||a.status==="researching";
+    const mx=(src.x+n.x)/2+(n.y-src.y)*.15,my=(src.y+n.y)/2-(n.x-src.x)*.15;
+    ctx.strokeStyle=rgba(c,act?.48:.19);ctx.lineWidth=act?1.7:1;ctx.beginPath();ctx.moveTo(src.x,src.y);ctx.quadraticCurveTo(mx,my,n.x,n.y);ctx.stroke();n.mx=mx;n.my=my;
+  });
+  for(let i=0;i<agents.length;i++)for(let j=i+1;j<agents.length;j++){const a=neurons[i],b=neurons[j];if(!a||!b)continue;const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<100){ctx.strokeStyle=`rgba(90,120,200,${.10*(1-d/100)})`;ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}
+  // evidence packets travel from the public-web gateway to the agent that requested them
+  flows=flows.filter(f=>f.age<1.35);flows.forEach(f=>{f.age+=.012;f.t=Math.min(1,f.t+.018);const target=f.owner_i>=0&&neurons[f.owner_i]?neurons[f.owner_i]:core;
+    const sx=gate.x+17,sy=gate.y,tx=target.x,ty=target.y,mx=(sx+tx)/2,my=(sy+ty)/2-30,u=f.t;
+    const x=(1-u)*(1-u)*sx+2*(1-u)*u*mx+u*u*tx,y=(1-u)*(1-u)*sy+2*(1-u)*u*my+u*u*ty;
+    const c=f.stage==="read"?[92,255,157]:f.stage==="read_error"?[255,92,122]:[62,230,255];
+    ctx.strokeStyle=rgba(c,.16);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(sx,sy);ctx.quadraticCurveTo(mx,my,tx,ty);ctx.stroke();
+    const gl=ctx.createRadialGradient(x,y,0,x,y,10);gl.addColorStop(0,rgba(c,.95));gl.addColorStop(1,rgba(c,0));ctx.fillStyle=gl;ctx.beginPath();ctx.arc(x,y,10,0,Math.PI*2);ctx.fill();
+  });
+  pulses=pulses.filter(p=>p.t<1);pulses.forEach(p=>{p.t+=p.sp;if(p.t<0)return;const t=p.t;let x,y;
+    if(p.q&&p.q.mx!=null){const u=1-t;x=u*u*p.a.x+2*u*t*p.q.mx+t*t*p.b.x;y=u*u*p.a.y+2*u*t*p.q.my+t*t*p.b.y}
+    else{x=p.a.x+(p.b.x-p.a.x)*t;y=p.a.y+(p.b.y-p.a.y)*t}
+    const g=ctx.createRadialGradient(x,y,0,x,y,p.amb?5:9);g.addColorStop(0,rgba(p.c,.95));g.addColorStop(1,rgba(p.c,0));ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,p.amb?5:9,0,Math.PI*2);ctx.fill()});
+  agents.forEach((a,i)=>{if((a.status==="working"||a.status==="researching")&&Math.random()<.025)fire(i)});
+  // rotating public-web gateway and scanning rings
+  const pulse=4+Math.sin(ts/260)*2+(searching?5:0),gx=gate.x,gy=gate.y;
+  for(let r=0;r<3;r++){ctx.beginPath();ctx.arc(gx,gy,18+r*8+((ts/35+r*14)%9),0,Math.PI*2);ctx.strokeStyle=`rgba(62,230,255,${.21-r*.045})`;ctx.lineWidth=1;ctx.stroke()}
+  ctx.save();ctx.translate(gx,gy);ctx.rotate(ts/2200);ctx.strokeStyle="rgba(62,230,255,.76)";ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(0,0,24+pulse,9+pulse*.25,.55,0,Math.PI*2);ctx.stroke();ctx.restore();
+  const gg=ctx.createRadialGradient(gx,gy,0,gx,gy,36);gg.addColorStop(0,"rgba(62,230,255,.30)");gg.addColorStop(1,"rgba(62,230,255,0)");ctx.fillStyle=gg;ctx.beginPath();ctx.arc(gx,gy,36,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#0a1721";ctx.strokeStyle="rgba(62,230,255,.95)";ctx.lineWidth=2;ctx.beginPath();ctx.arc(gx,gy,15,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.font="17px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("🌐",gx,gy+1);ctx.font="9px system-ui";ctx.fillStyle="#81bfd2";ctx.fillText("PUBLIC WEB",gx,gy+46);ctx.fillText("+ OFFICIAL DATA",gx,gy+58);
+  // queen core
+  const cr=27+Math.sin(ts/500)*2+core.fire*8;let g=ctx.createRadialGradient(core.x,core.y,0,core.x,core.y,cr*3.2);g.addColorStop(0,"rgba(255,183,43,.42)");g.addColorStop(1,"rgba(255,183,43,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(core.x,core.y,cr*3.2,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle="rgba(255,183,43,.92)";ctx.lineWidth=2;ctx.beginPath();for(let k=0;k<6;k++){const an=Math.PI/3*k+Math.PI/6+ts/4000;ctx.lineTo(core.x+Math.cos(an)*cr,core.y+Math.sin(an)*cr)}ctx.closePath();ctx.fillStyle="#1a1206";ctx.fill();ctx.stroke();
+  ctx.font="20px system-ui";ctx.fillStyle="#fff";ctx.fillText({idle:"🧠",plan:"👑",work:"👑",critic:"🔍",refine:"♻️",synth:"🧬",verify:"🔬",done:"✅"}[phaseName]||"🧠",core.x,core.y+1);
+  // live agents and nested helper clusters
+  const R0=agents.length>30?8:agents.length>14?11:15;
+  agents.forEach((a,i)=>{const n=neurons[i];if(!n)return;const c=a.parent!=null&&a.status==="queued"?[192,92,255]:(COL[a.status]||COL.queued);
+    const r=(a.parent!=null?R0*.68:R0)+n.fire*5+((a.status==="working"||a.status==="researching")?Math.sin(ts/200+n.ph)*1.3:0);
+    const ng=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r*2.5);ng.addColorStop(0,rgba(c,.48+n.fire*.4));ng.addColorStop(1,rgba(c,0));ctx.fillStyle=ng;ctx.beginPath();ctx.arc(n.x,n.y,r*2.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#0b1020";ctx.strokeStyle=rgba(c,.95);ctx.lineWidth=2;ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.font=`${Math.round(r*1.05)}px system-ui`;ctx.fillStyle="#fff";ctx.fillText(a.emoji||"🐝",n.x,n.y+1);
+    if(agents.length<=14&&a.parent==null){ctx.font="10px system-ui";ctx.fillStyle="#aab6d8";ctx.fillText(a.name.slice(0,14),n.x,n.y+r+11)}});
+  requestAnimationFrame(draw);
+}
+cv.addEventListener("mousemove",e=>{const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;let hit=-1;
+  neurons.forEach((n,i)=>{if(n&&Math.hypot(n.x-x,n.y-y)<18)hit=i});const tip=$("#tip"),gateHit=Math.hypot(gate.x-x,gate.y-y)<28;cv.style.cursor=hit>=0||gateHit?"pointer":"default";
+  if(gateHit){tip.style.display="block";tip.style.left=Math.min(x+14,W-270)+"px";tip.style.top=(y+14)+"px";tip.innerHTML=`<b>Public-web gateway</b><br><span style="color:#7483ab">Live search results, RSS and selected public pages. Click to inspect provenance.</span>`}
+  else if(hit>=0){const a=agents[hit];tip.style.display="block";tip.style.left=Math.min(x+14,W-270)+"px";tip.style.top=(y+14)+"px";
+    tip.innerHTML=`<b>${esc(a.emoji)} ${esc(a.name)}</b> ${a.parent!=null?'<span style="color:#c05cff">· helper swarm</span>':""}<br><span style="color:#7483ab">${esc(a.role)}</span><br>${esc(a.status)}<br><span style="font-size:11px">${esc(a.task.slice(0,140))}</span>`}
+  else tip.style.display="none"});
+cv.addEventListener("click",e=>{const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;if(Math.hypot(gate.x-x,gate.y-y)<28){showTab("sources");return}neurons.forEach((n,i)=>{if(n&&Math.hypot(n.x-x,n.y-y)<18){showTab("agents");$("#ag"+i)?.scrollIntoView({behavior:"smooth",block:"center"})}})});
+
+/* ---------------- UI helpers ---------------- */
+function showTab(t){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x.dataset.t===t));document.querySelectorAll(".pane").forEach(x=>x.classList.toggle("on",x.id==="p-"+t));if(t==="hist")loadHist();if(t==="sources")renderSources();if(t==="agents")renderAgents()}
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>showTab(x.dataset.t));
+function log(m,c="",t=null){const d=document.createElement("div");if(c)d.className=c;d.textContent=`[${t!=null?Math.round(t)+"s":new Date().toLocaleTimeString()}] ${m}`;$("#log").appendChild(d);$("#p-log").scrollTop=1e9}
+function card(a,i){return `<div class="agent ${a.parent!=null?"sub":""}" id="ag${i}"><div class="top"><span class="emo">${esc(a.emoji)}</span><div><div class="nm">${esc(a.name)}</div><div class="rl">${esc(a.role)}${a.parent!=null?` · helper of ${esc(agents[a.parent]?.name)}`:""}</div></div><span class="st ${a.status}">${a.status}</span></div>
+  <div class="task">${esc(a.task)}${a.query?`<br><span style="color:var(--cy)">🔎 ${esc(a.query)}</span>`:""}</div><div class="out md">${a.output?md(a.output):""}</div></div>`}
+function renderAgents(){$("#agents").innerHTML=agents.map(card).join("");$("#agCount").textContent=agents.length?`(${agents.length})`:"";layout()}
+function upd(i){const el=$("#ag"+i);if(el)el.outerHTML=card(agents[i],i);else renderAgents()}
+function phase(p){phaseName=p;const o=["plan","work","critic","refine","synth","verify"],k=o.indexOf(p);document.querySelectorAll(".ph").forEach(e=>{const j=o.indexOf(e.dataset.p);e.className="ph"+(p==="done"||j<k?" done":j===k?" on":"")});core.fire=1;setLive(p==="verify"?"CROSS-CHECKING":p==="done"?"COMPLETE":p.toUpperCase())}
+function setLive(text){const el=$("#liveState");if(el)el.textContent=text}
+function stats(s){lastStats=s||{};$("#sAgents").textContent=s.agents??0;$("#sSubs").textContent=s.subswarms??0;$("#sSources").textContent=s.sources??0;$("#sRead").textContent=s.pages_read??0;$("#sCalls").textContent=s.calls??0;$("#sCalcs").textContent=s.calcs??0;
+  $("#sVerified").textContent=s.claims?Math.round(100*(s.verified||0)/s.claims)+"%":"N/A";
+  $("#feedFoot").textContent=`${s.sources??SOURCES.length} web results · ${s.pages_read??SOURCES.filter(x=>x.page_read).length} pages opened · ${s.claims?`${s.verified||0}/${s.claims} numeric text matches`:`numeric check: N/A`}`;
+  $("#srcCount").textContent=SOURCES.length?`(${SOURCES.length})`:"";renderFeed()}
+function sourceHref(u){return /^https?:\/\//i.test(String(u||""))?String(u):"#"}
+function domain(u){try{return new URL(u).hostname.replace(/^www\./,"")}catch{return "source"}}
+function sourceCard(s){const st=s.kind==="official_api"?"OFFICIAL API":s.page_read?"PAGE OPENED":"SEARCH RESULT", trust=s.trust>0?"⭐ domain heuristic":s.trust<0?"⚠ weak-domain flag":"unrated domain";
+  const txt=s.text||s.excerpt||s.snippet||"No page excerpt was stored for this result.";
+  return `<div class="sourceCard"><div class="srcTop"><div style="flex:1;min-width:0"><a class="srcTitle" href="${esc(sourceHref(s.url))}" target="_blank" rel="noopener">${esc(s.title||domain(s.url))}</a><div class="srcMeta">${esc(st)} · ${esc(s.engine||"web search")} · ${esc(s.publisher||domain(s.url))}${s.relevance!=null?` · query match ${Math.round(s.relevance*100)}%`:""}</div></div><span class="st ${s.page_read?"done":s.kind==="official_api"?"done":"queued"}">${esc(trust)}</span></div>
+  <div class="srcSnippet">${esc((s.snippet||txt).slice(0,420))}</div><div class="srcMeta">Query: ${esc((s.queries||[s.query||""]).filter(Boolean).join(" · ")||"official data feed")} · Collected ${esc(s.observed_at||"during this run")}${s.read_at?` · Opened ${esc(s.read_at)}`:""}</div>
+  <details><summary>Show extracted text (${Math.min(txt.length,1600)} characters)</summary><div style="margin-top:5px;max-height:180px;overflow:auto">${esc(txt.slice(0,1600))}</div></details></div>`}
+function renderFeed(){const box=$("#evidenceFeed");if(!box)return;const rows=SOURCES.slice(-8).reverse();box.innerHTML=rows.length?rows.map(s=>{
+    const status=s.kind==="official_api"||s.page_read?"read":s.status==="reading"?"reading":s.status==="verifying"?"reading":s.status==="read_error"?"failed":"";
+    const stage=s.status==="verifying"?"VERIFYING…":s.page_read?"PAGE OPENED":s.status==="reading"?"OPENING…":s.status==="read_error"?"PAGE UNAVAILABLE":"SEARCH RESULT";
+    return `<div class="evcard ${status}"><a class="evtitle" href="${esc(sourceHref(s.url))}" target="_blank" rel="noopener">${esc(s.title||domain(s.url))}</a><div class="evsnippet">${esc((s.snippet||s.text||"").slice(0,210))}</div><div class="evmeta"><span>${esc(s.engine||s.kind||"search")} · ${esc(s.publisher||domain(s.url))}</span><span>${stage}</span></div></div>`}).join(""):'<div class="feedempty">Search queries, source snippets and page reads stream here as they happen.</div>';box.scrollTop=0}
+function renderQueries(){const box=$("#queryList");if(!box)return;const rows=SEARCHES.slice(-5).reverse();box.innerHTML=rows.length?rows.map(q=>`<div class="qrow ${q.stage==="searching"?"searching":""}"><div>⌕ ${esc(q.query)}</div><div class="qmeta"><span>${esc(q.engine||q.stage||"search")}${q.newsEngine?` + ${esc(q.newsEngine)}`:""}</span><span>${q.stage==="searching"?"SEARCHING…":q.error?"RETRY/FALLBACK":`${q.count||0} hits`}</span></div></div>`).join(""):'<div class="qrow">No search yet <div class="qmeta"><span>Waiting for mission</span><span>—</span></div></div>'}
+function onSearch(ev){let q=SEARCHES.find(x=>x.query===ev.query&&x.owner_i===ev.owner_i);if(!q){q={query:ev.query,owner_i:ev.owner_i,count:0};SEARCHES.push(q)}
+  if(ev.stage==="searching"){q.stage="searching";setLive("SEARCHING")}
+  else if(ev.stage==="complete"){q.stage="complete";q.engine=ev.engine;q.count=ev.count||0;setLive("COLLECTING")}
+  else if(ev.stage==="news_complete"){q.newsEngine=ev.engine;q.count+=ev.count||0;setLive("COLLECTING")}
+  else if(ev.stage==="error"){q.stage="error";q.error=ev.error;setLive("RETRYING")}
+  q.updated=Date.now();renderQueries()}
+function onSource(ev){const src=ev.source||{};let s=SOURCES.find(x=>x.url===src.url);
+  if(!s){s={...src};SOURCES.push(s)}else Object.assign(s,src);
+  s.status=ev.stage;if(src.excerpt)s.text=src.excerpt;if(ev.owner_i!==undefined)s.owner_i=ev.owner_i;
+  flow({owner_i:ev.owner_i,stage:ev.stage,kind:s.kind});
+  $("#srcCount").textContent=`(${SOURCES.length})`;renderFeed();if($("#p-sources").classList.contains("on"))renderSources()}
+function renderSources(){const term=($("#sourceFilter")?.value||"").toLowerCase(),kind=$("#sourceKind")?.value||"all";
+  const list=SOURCES.filter(s=>{
+    const text=[s.title,s.url,s.query,...(s.queries||[]),s.engine,s.snippet].join(" ").toLowerCase();if(term&&!text.includes(term))return false;
+    if(kind==="read"&&!s.page_read)return false;if(kind==="result"&&(s.page_read||s.kind==="official_api"))return false;if(kind==="official"&&s.kind!=="official_api")return false;return true;
+  }).slice().reverse();$("#sourceSummary").textContent=`${list.length} shown · ${SOURCES.length} unique URLs`;$("#sourceList").innerHTML=list.length?list.map(sourceCard).join(""):'<div class="small">No matching evidence. Turn Web research on for the mission to collect sources.</div>'}
+$("#sourceFilter").addEventListener("input",renderSources);$("#sourceKind").addEventListener("change",renderSources);
+setInterval(()=>{if(running)$("#sTime").textContent=Math.round((Date.now()-t0)/1000)+"s"},1000);
+
+/* ---------------- mission streaming ---------------- */
+const queue=[];
+async function watch(id,goal){
+  if(running){queue.push([id,goal]);log(`Queued mission view: ${goal.slice(0,60)}`,"a");return}
+  running=true;CUR=id;t0=Date.now();agents=[];SOURCES=[];SEARCHES=[];neurons=[];pulses=[];flows=[];FINAL="";$("#final").innerHTML="";$("#log").innerHTML="";$("#sTime").textContent="0s";renderAgents();renderQueries();renderFeed();showTab("final");phase("plan");
+  $("#mtitle").textContent="▶ "+goal;$("#run").disabled=true;$("#stop").disabled=false;stats({agents:0,subswarms:0,sources:0,pages_read:0,calls:0,calcs:0,claims:0,verified:0});setLive("SCOUTING");
+  let since=0,done=false;
+  while(!done){let ev;try{ev=(await (await fetch(`/api/events?id=${id}&since=${since}`)).json()).events||[]}catch{await sleep(2000);continue}
+    for(const e of ev){since=e.n+1;
+      if(e.type==="log")log(e.msg,e.cls,e.t);
+      else if(e.type==="phase")phase(e.p);
+      else if(e.type==="stats")stats(e.stats);
+      else if(e.type==="search")onSearch(e);
+      else if(e.type==="source")onSource(e);
+      else if(e.type==="spawn"){agents[e.i]=e.agent;renderAgents();fire(e.i)}
+      else if(e.type==="agent"){const was=agents[e.i]?.status;agents[e.i]=e.agent;upd(e.i);if(was!==e.agent.status)fire(e.i);setLive(e.agent.status==="researching"?"RESEARCHING":e.agent.status==="working"?"AI QUEUE · 1 LANE":e.agent.status==="done"?"WEAVING RESULTS":"AGENTS ACTIVE")}
+      else if(e.type==="pulse")fire(e.i);
+      else if(e.type==="subswarm"){fire(e.parent);log("🧠 helper swarm spawned","g")}
+      else if(e.type==="final"){FINAL=e.md;$("#final").innerHTML=md(e.md);phase("done");
+        addBot(`✅ Mission finished: **${goal.slice(0,90)}**. The report is ready. You can keep browsing Evidence, Agents or Log while the mission ends.`)}
+      else if(e.type==="done")done=true}}
+  running=false;$("#run").disabled=false;$("#stop").disabled=true;
+  if(queue.length){const [i,g]=queue.shift();watch(i,g)}
+}
+
+/* ---------------- Commander chat ---------------- */
+function addMsg(role,text,launched=[]){const d=document.createElement("div");d.className="msg "+(role==="user"?"u":"b");
+  d.innerHTML=(role==="user"?"":`<div class="who">COMMANDER</div>`)+md(text)+launched.map(l=>`<div class="launch" data-id="${l.id}" data-g="${esc(l.goal)}">🚀 Swarm launched · ${l.size} agents · ${esc(l.mode)}<br><span class="small">${esc(l.goal.slice(0,140))}</span></div>`).join("");
+  $("#chat").appendChild(d);$("#chat").scrollTop=1e9;
+  d.querySelectorAll(".launch").forEach(x=>x.onclick=()=>{if(CUR!==x.dataset.id)watch(x.dataset.id,x.dataset.g)})}
+function addBot(t){addMsg("assistant",t);chatMsgs.push({role:"assistant",content:t})}
+async function send(txt){
+  txt=(txt||$("#cin").value).trim();if(!txt)return;$("#cin").value="";addMsg("user",txt);chatMsgs.push({role:"user",content:txt});
+  const ty=document.createElement("div");ty.className="msg b typing";ty.innerHTML="<span></span><span></span><span></span>";$("#chat").appendChild(ty);$("#chat").scrollTop=1e9;$("#csend").disabled=true;
+  try{const r=await (await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:chatMsgs})})).json();
+    ty.remove();const replyText=(r.reply||"").trim()||((r.launched||[]).length?"Swarm launched. I’m streaming its research steps, sources and final report here.":"I couldn’t get a reply from the free model just now. Please retry.");addMsg("assistant",replyText,r.launched||[]);chatMsgs.push({role:"assistant",content:replyText+(r.launched?.length?`\n[launched ${r.launched.length} swarm(s)]`:"")});
+    (r.launched||[]).forEach(l=>watch(l.id,l.goal))}
+  catch(e){ty.remove();addMsg("assistant","Connection issue — is server.py running? "+e.message)}
+  $("#csend").disabled=false}
+$("#csend").onclick=()=>send();$("#cin").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}});
+const CCH=["Find every way to make money with AI starting from $0","Launch 3 swarms: AI services, digital products, micro-SaaS","What can I automate and sell to Toronto small businesses?","Find free grants & funding I could qualify for in Ontario"];
+$("#cchips").innerHTML=CCH.map(c=>`<span>${esc(c)}</span>`).join("");$("#cchips").onclick=e=>{if(e.target.tagName==="SPAN")send(e.target.textContent)};
+
+/* ---------------- manual control ---------------- */
+const PRESETS={"🤖 Every AI money path":["Find the broadest realistic set of ways to earn using AI in 2026 starting with $0: automation services, micro-SaaS, digital products, content, e-commerce, freelancing and lead-gen. Rank opportunities with cited current demand/pricing; label estimates and risks; give first steps.","money"],
+ "🛠 Automation agency":["Design an AI automation service for Toronto small businesses: what to automate, free tools to build it, real pricing benchmarks, where to find clients, outreach scripts and a 30-day launch plan.","money"],
+ "📦 Digital products":["Find 10 AI-made digital products with proven demand (Etsy, Gumroad, etc.), real price points and competition, and exactly how to create and sell each.","money"],
+ "💸 Free funding":["Find grants, free funding, competitions and programs a solo founder in Ontario, Canada could apply for in 2026, with amounts, eligibility and deadlines.","research"],
+ "🌐 Public-source intel":["Create a sourced public-information brief on the target organization or topic I name. Use only lawful public records, official releases, company filings, technical docs and reputable reporting; show collection dates, source links, confidence and gaps. Do not seek private accounts or classified material.","osint"],
+ "🛡 Defensive cyber review":["Review my own authorized website/app or a lab target. Produce a defensive threat model, safe checks, patch priorities and incident-response steps. Do not exploit third-party systems, bypass access controls or collect credentials.","security"],
+ "🎮 Build a game":["Build a complete playable Snake game in a single HTML file with score and high-score saving.","code"]};
+$("#presets").innerHTML=Object.keys(PRESETS).map(k=>`<span>${k}</span>`).join("");
+$("#presets").onclick=e=>{const p=PRESETS[e.target.textContent];if(p){$("#goal").value=p[0];$("#mode").value=p[1];$("#web").value=p[1]==="code"?"0":"1"}};
+function eta(){const n=+$("#size").value,r=+$("#rounds").value,d=$("#depth").value;const f={fast:0,accurate:.35,max:.7}[d];const calls=Math.ceil(4+n*(1+r)+n*f);const lo=Math.max(1,Math.round(calls*35/60)),hi=Math.max(lo+1,Math.round(calls*65/60));$("#eta").textContent=`≈ ${calls} AI calls · rough ${lo}–${hi} min (keyless free model; one call at a time). Web searches run alongside.`}
+["#size","#rounds","#depth"].forEach(s=>$(s).addEventListener("change",eta));eta();
+$("#run").onclick=async()=>{const goal=$("#goal").value.trim();if(!goal)return $("#goal").focus();
+  const r=await (await fetch("/api/mission",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({goal,size:+$("#size").value,rounds:+$("#rounds").value,depth:$("#depth").value,mode:$("#mode").value,style:$("#style").value,web:$("#web").value==="1"})})).json();
+  if(r.id)watch(r.id,goal)};
+$("#stop").onclick=()=>CUR&&fetch("/api/stop",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:CUR})});
+$("#copy").onclick=()=>{navigator.clipboard?.writeText(FINAL);log("Copied.","g")};
+$("#dl").onclick=()=>{if(!FINAL)return;const all=FINAL+"\n\n---\n# Agent reports\n\n"+agents.map(a=>`## ${a.emoji} ${a.name} — ${a.role}\n${a.output}`).join("\n\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([all],{type:"text/markdown"}));a.download="hive-report.md";a.click()};
+
+/* ---------------- memory ---------------- */
+async function loadHist(){try{const h=(await (await fetch("/api/history")).json()).missions;
+  $("#hist").innerHTML=h.length?h.map(m=>`<div class="hist" data-id="${m.id}"><b>${esc(m.goal.slice(0,120))}</b><div class="d">${esc(m.date)} · ${esc(m.mode||"")} · ${m.stats?.agents||0} agents · ${m.stats?.sources||0} results · ${m.stats?.pages_read||0} pages${m.stats?.claims?` · ${Math.round(100*m.stats.verified/m.stats.claims)}% number match`:" · check N/A"}</div></div>`).join(""):'<div class="small">No saved missions yet.</div>';
+  document.querySelectorAll(".hist").forEach(x=>x.onclick=async()=>{const d=await (await fetch("/api/load?id="+x.dataset.id)).json();
+    agents=(d.agents||[]).map(a=>({...a,status:"done"}));SOURCES=(d.sources||[]).map(s=>({...s,status:s.page_read?"read":"found"}));SEARCHES=[];neurons=[];flows=[];renderAgents();renderFeed();renderSources();FINAL=d.final;$("#final").innerHTML=md(d.final);stats({...d.stats,sources:d.stats?.sources??SOURCES.length,pages_read:d.stats?.pages_read??SOURCES.filter(s=>s.page_read).length});$("#mtitle").textContent="🗂 "+d.goal;phase("done");showTab("final")})}catch{}}
+
+resize();requestAnimationFrame(draw);
+addBot("I'm **Commander** — a free-model agent running HIVE's workflow, not the Arena assistant embedded in this page. With Web on, HIVE runs public web searches during the mission and opens selected pages; the Evidence panel shows the query, search engine, actual page reads and links. The free model is rate-limited, so its AI calls run one at a time. I can help with money-making research, public-source intelligence and defensive cyber work; I won't access private accounts, classified systems or move money. What should the swarm investigate?");
+if(location.protocol==="file:")addBot("⚠ You opened this as a file. Run `python3 server.py` and open http://localhost:8080");
+</script>
+</body>
+</html>

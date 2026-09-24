@@ -121,6 +121,42 @@ details.ctl summary::before{content:"▸ "} details.ctl[open] summary::before{co
 .md blockquote{border-left:3px solid var(--cy);margin:.5em 0;padding-left:10px;color:#aab6d8}.md a{color:var(--cy)}
 #final:empty::before{content:"The swarm's final report appears here — ask Commander or launch a mission.";color:var(--mute)}
 .small{font-size:11.5px;color:var(--mute)}
+
+/* ---- MOBILE RESPONSIVE ---- */
+@media(max-width:768px){
+  body{overflow:auto;font-size:13px}
+  .app{height:auto;min-height:100vh;grid-template-rows:auto auto auto}
+  header{flex-wrap:wrap;padding:8px 10px;gap:8px}
+  .logo{font-size:16px;letter-spacing:2px}
+  .logo .small{display:none}
+  .stats{gap:4px;flex-wrap:wrap;justify-content:center;width:100%;margin-left:0}
+  .stat{padding:3px 6px;min-width:50px}
+  .stat .v{font-size:13px}
+  .stat .k{font-size:8px}
+  .grid{grid-template-columns:1fr !important;padding:6px;gap:8px}
+  .left{order:2}
+  .right{order:1}
+  .card{padding:10px;border-radius:10px}
+  .card h2{font-size:10px}
+  #chatCard{min-height:200px}
+  .msg{font-size:12px;max-width:98%}
+  textarea,input,select{font-size:16px !important;padding:8px !important}
+  button{padding:10px 14px !important;font-size:14px !important}
+  .grid .right .card{overflow-x:auto}
+  #final{font-size:12px}
+  .md h1{font-size:1.2em}
+  .md h2{font-size:1.05em}
+  .md table{font-size:.8em}
+  .presets{flex-wrap:wrap;gap:4px}
+  .presets span{font-size:11px;padding:4px 8px}
+  #goal{min-height:60px}
+  .tabs{gap:4px}
+  .tab{padding:6px 10px;font-size:12px}
+}
+@media(max-width:480px){
+  .stats .stat:nth-child(n+5){display:none}
+  .logo span.small{display:none}
+}
 </style>
 </head>
 <body>

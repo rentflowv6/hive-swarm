@@ -121,86 +121,12 @@ details.ctl summary::before{content:"▸ "} details.ctl[open] summary::before{co
 .md blockquote{border-left:3px solid var(--cy);margin:.5em 0;padding-left:10px;color:#aab6d8}.md a{color:var(--cy)}
 #final:empty::before{content:"The swarm's final report appears here — ask Commander or launch a mission.";color:var(--mute)}
 .small{font-size:11.5px;color:var(--mute)}
-
-/* ---- MOBILE TAB NAVIGATION ---- */
-.mobile-tabs{display:none}
-.mobile-tab-panels{display:none}
-.mobile-tab-bar{display:none}
-
-@media(max-width:768px){
-  body{overflow:auto!important;font-size:13px!important;overflow-x:hidden!important}
-  .app{height:100vh!important;min-height:100vh!important;display:flex!important;flex-direction:column!important}
-  header{flex-wrap:wrap!important;padding:8px 10px!important;gap:6px!important;flex-direction:column!important;align-items:flex-start!important}
-  .logo{font-size:14px!important;letter-spacing:2px!important}
-  .logo .small{display:none!important}
-  .stats{gap:3px!important;flex-wrap:wrap!important;justify-content:flex-start!important;width:100%!important;margin-left:0!important}
-  .stat{padding:2px 5px!important;min-width:40px!important}
-  .stat .v{font-size:11px!important}
-  .stat .k{font-size:7px!important}
-
-  /* Hide desktop grid on mobile */
-  .grid{display:none!important}
-
-  /* Mobile tab bar */
-  .mobile-tab-bar{display:flex!important;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#060912ee;backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:6px 8px 8px;gap:4px;justify-content:space-around}
-  .mobile-tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:10px;background:none;border:0;color:var(--mute);font-size:10px;cursor:pointer;font-family:inherit;transition:all .2s}
-  .mobile-tab-btn .icon{font-size:18px;line-height:1}
-  .mobile-tab-btn .label{font-size:10px;letter-spacing:.3px}
-  .mobile-tab-btn.active{color:var(--acc);background:var(--p);box-shadow:0 0 12px #ffb72b22}
-  .mobile-tab-btn .badge{font-size:9px;color:var(--cy);font-weight:700}
-
-  /* Mobile tab panels */
-  .mobile-tab-panels{display:flex!important;flex:1;overflow:hidden;position:relative}
-  .mobile-panel{display:none;flex-direction:column;flex:1;overflow:auto;padding:10px;gap:10px;padding-bottom:80px}
-  .mobile-panel.active{display:flex}
-
-  /* Mobile Chat panel */
-  #mobile-chat-panel .card{flex:1;display:flex;flex-direction:column}
-  #mobile-chat-panel #chatCard{min-height:0;flex:1}
-
-  /* Mobile Evidence panel */
-  #mobile-evidence-panel .brain-layout{display:flex;flex-direction:column;flex:1;min-height:0}
-  #mobile-evidence-panel .brainviz{min-height:200px;flex:0 0 auto}
-  #mobile-evidence-panel .intel-feed{flex:1;min-height:0}
-
-  /* Mobile Report panel */
-  #mobile-report-panel .tabs{margin-bottom:8px}
-  #mobile-report-panel .pane.on{flex:1}
-
-  /* Mobile Stats panel */
-  #mobile-stats-panel .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-  #mobile-stats-panel .stat-card{background:var(--p);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
-  #mobile-stats-panel .stat-card .v{font:700 22px ui-monospace,Consolas,monospace;color:var(--cy)}
-  #mobile-stats-panel .stat-card .k{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
-  #mobile-stats-panel .stat-card.g .v{color:var(--ok)}
-  #mobile-stats-panel .stat-card.a .v{color:var(--acc)}
-  #mobile-stats-panel .stat-card.m .v{color:var(--mg)}
-
-  textarea,input,select{font-size:16px!important;padding:6px!important;width:100%!important;box-sizing:border-box!important}
-  button{padding:8px 12px!important;font-size:13px!important}
-  #final{font-size:11px!important}
-  .md h1{font-size:1.1em!important}
-  .md h2{font-size:1em!important}
-  .md table{font-size:.75em!important}
-  .presets{flex-wrap:wrap!important;gap:3px!important}
-  .presets span{font-size:10px!important;padding:3px 6px!important}
-  #goal{min-height:50px!important}
-  .tabs{gap:3px!important;flex-wrap:wrap!important}
-  .tab{padding:5px 8px!important;font-size:11px!important}
-  .feedhint{display:none!important}
-}
-@media(max-width:480px){
-  .stats .stat:nth-child(n+4){display:none!important}
-  .logo .small{display:none!important}
-  #mobile-stats-panel .stats-grid{grid-template-columns:repeat(2,1fr)}
-}
 </style>
 </head>
 <body>
 <div id="bgfx"></div>
 <div class="app">
-<!-- ===== DESKTOP HEADER ===== -->
-<header id="desktopHeader">
+<header>
   <div class="logo"><span class="dot"></span>H<b>I</b>VE <span class="small" style="letter-spacing:1px;font-weight:400">keyless free tier · public sources · 1 AI lane</span></div>
   <div class="stats">
     <div class="stat"><div class="v" id="sAgents">0</div><div class="k">agents</div></div>
@@ -214,8 +140,7 @@ details.ctl summary::before{content:"▸ "} details.ctl[open] summary::before{co
   </div>
 </header>
 
-<!-- ===== DESKTOP GRID ===== -->
-<div class="grid" id="desktopGrid">
+<div class="grid">
   <div class="left">
     <div class="card" id="chatCard">
       <h2>🧠 Commander <span class="small" style="text-transform:none;letter-spacing:0">— talk to the Hive. It launches swarms for you.</span></h2>
@@ -294,184 +219,19 @@ details.ctl summary::before{content:"▸ "} details.ctl[open] summary::before{co
     </div>
   </div>
 </div>
-
-<!-- ===== MOBILE TAB PANELS ===== -->
-<div class="mobile-tab-panels" id="mobilePanels">
-
-  <!-- Mobile: Chat Panel -->
-  <div class="mobile-panel active" id="mobile-chat-panel">
-    <div class="card" id="mChatCard" style="flex:1;display:flex;flex-direction:column;min-height:0">
-      <h2>🧠 Commander</h2>
-      <div id="mChat" style="flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:2px 0"></div>
-      <div class="chips" id="mCchips"></div>
-      <div class="chatin">
-        <textarea id="mcin" rows="2" placeholder="Ask Commander or describe a mission…"></textarea>
-        <button id="mcsend">Send</button>
-      </div>
-    </div>
-    <div class="card">
-      <details class="ctl" id="mCtl">
-        <summary>Manual mission control</summary>
-        <textarea id="mGoal" rows="3" style="margin-top:8px" placeholder="Mission for the swarm…"></textarea>
-        <div class="chips" id="mPresets"></div>
-        <div class="row">
-          <div><label>Swarm size</label><select id="mSize"><option>3</option><option selected>5</option><option>8</option><option>12</option><option>20</option><option>30</option><option>40</option><option>50</option></select></div>
-          <div><label>Depth</label><select id="mDepth"><option value="fast">⚡ Fast</option><option value="accurate" selected>🎯 Accurate</option><option value="max">🧠 Max</option></select></div>
-        </div>
-        <div class="row">
-          <div><label>Mode</label><select id="mMode"><option value="money">💰 AI money</option><option value="team">Expert team</option><option value="research">Research</option><option value="osint">🌐 Intel</option><option value="security">🛡 Cyber</option><option value="debate">Debate</option><option value="code">Code</option></select></div>
-          <div><label>Output</label><select id="mStyle"><option value="actionable">Action plan</option><option value="detailed">Detailed</option><option value="concise">Concise</option></select></div>
-        </div>
-        <div class="row">
-          <div><label>Critic rounds</label><select id="mRounds"><option value="0">0</option><option value="1" selected>1</option><option value="2">2</option></select></div>
-          <div><label>Web</label><select id="mWeb"><option value="1" selected>🌐 On</option><option value="0">Off</option></select></div>
-        </div>
-        <div class="small" id="mEta" style="margin-top:6px"></div>
-        <div style="display:flex;gap:6px;margin-top:8px"><button id="mRun" style="flex:1">🚀 Launch swarm</button><button id="mStop" class="sec" disabled>■ Stop</button></div>
-      </details>
-    </div>
-  </div>
-
-  <!-- Mobile: Evidence Panel -->
-  <div class="mobile-panel" id="mobile-evidence-panel">
-    <div class="card" style="flex:1;display:flex;flex-direction:column;min-height:0">
-      <div class="phases" style="position:relative;top:auto;left:auto;right:auto;margin-bottom:8px">
-        <div class="ph" data-p="plan">👑 Plan</div><div class="ph" data-p="work">🐝 Research</div>
-        <div class="ph" data-p="critic">🔍 Critic</div><div class="ph" data-p="refine">♻ Refine</div>
-        <div class="ph" data-p="synth">🧬 Synth</div><div class="ph" data-p="verify">🔬 Verify</div>
-      </div>
-      <div class="brain-layout" style="padding-top:0;flex:1">
-        <div class="brainviz" style="min-height:200px">
-          <canvas id="mBrain"></canvas>
-          <div class="legend"><span><i style="background:#3ee6ff"></i>research</span><span><i style="background:#ffb72b"></i>work</span><span><i style="background:#5cff9d"></i>done</span></div>
-          <div id="mMtitle">Idle · waiting for a mission</div>
-          <div id="mTip"></div>
-        </div>
-        <aside class="intel-feed">
-          <div class="feedhead">🌐 Live evidence <span class="livebadge" id="mLiveState">STANDBY</span></div>
-          <div id="mQueryList"><div class="qrow">No search yet <div class="qmeta"><span>Waiting</span><span>—</span></div></div></div>
-          <div class="feedlabel">Latest items</div>
-          <div id="mEvidenceFeed"><div class="feedempty">Search queries, source snippets and page reads will stream here.</div></div>
-          <div class="feedfoot" id="mFeedFoot">0 results · 0 pages opened</div>
-        </aside>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mobile: Report Panel -->
-  <div class="mobile-panel" id="mobile-report-panel">
-    <div class="card" id="mTabsCard" style="flex:1;display:flex;flex-direction:column;min-height:0">
-      <div class="tabs">
-        <div class="tab on" data-t="final">📄 Report</div>
-        <div class="tab" data-t="agents">🐝 Agents <span id="mAgCount"></span></div>
-        <div class="tab" data-t="sources">🔎 Evidence <span id="mSrcCount"></span></div>
-        <div class="tab" data-t="log">📡 Log</div>
-        <div class="tab" data-t="hist">🗂 Memory</div>
-        <div class="sp"><button class="sec" id="mCopy" style="padding:4px 10px;font-size:11px">Copy</button><button class="sec" id="mDl" style="padding:4px 10px;font-size:11px">.md</button></div>
-      </div>
-      <div class="pane on md" id="mp-final"><div id="mFinal"></div></div>
-      <div class="pane" id="mp-agents"><div class="agents" id="mAgents"></div></div>
-      <div class="pane" id="mp-sources">
-        <div style="display:flex;gap:7px;align-items:center;margin:0 0 8px">
-          <input id="mSourceFilter" placeholder="Filter…" style="max-width:440px;padding:7px 9px">
-          <select id="mSourceKind" style="width:150px;padding:7px 8px"><option value="all">All</option><option value="read">Opened</option><option value="result">Results</option><option value="official">Official</option></select>
-        </div>
-        <div id="mSourceList" class="agents"></div>
-      </div>
-      <div class="pane" id="mp-log"><div id="mLog"></div></div>
-      <div class="pane" id="mp-hist"><div id="mHist"></div></div>
-    </div>
-  </div>
-
-  <!-- Mobile: Stats Panel -->
-  <div class="mobile-panel" id="mobile-stats-panel">
-    <div class="card" style="flex:1">
-      <h2>📊 Swarm Status</h2>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="v" id="msAgents">0</div><div class="k">Agents</div></div>
-        <div class="stat-card m"><div class="v" id="msSubs">0</div><div class="k">Sub‑swarms</div></div>
-        <div class="stat-card"><div class="v" id="msSources">0</div><div class="k">Web results</div></div>
-        <div class="stat-card"><div class="v" id="msRead">0</div><div class="k">Pages read</div></div>
-        <div class="stat-card g"><div class="v" id="msVerified">N/A</div><div class="k">Matched*</div></div>
-        <div class="stat-card a"><div class="v" id="msCalls">0</div><div class="k">AI calls</div></div>
-        <div class="stat-card"><div class="v" id="msCalcs">0</div><div class="k">Calcs</div></div>
-        <div class="stat-card"><div class="v" id="msTime">0s</div><div class="k">Elapsed</div></div>
-      </div>
-      <div style="margin-top:16px">
-        <h2>🧬 Current Phase</h2>
-        <div id="msPhase" style="font-size:16px;font-weight:700;color:var(--acc);margin-top:8px">Idle</div>
-      </div>
-      <div style="margin-top:16px">
-        <h2>🌐 Live State</h2>
-        <div id="msLive" style="font-size:14px;color:var(--cy);margin-top:8px">STANDBY</div>
-      </div>
-      <div style="margin-top:16px">
-        <h2>📋 Mission</h2>
-        <div id="msMission" style="font-size:13px;color:var(--mute);margin-top:8px">No active mission</div>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-<!-- ===== MOBILE TAB BAR ===== -->
-<nav class="mobile-tab-bar" id="mobileTabBar">
-  <button class="mobile-tab-btn active" data-panel="mobile-chat-panel">
-    <span class="icon">🧠</span>
-    <span class="label">Chat</span>
-  </button>
-  <button class="mobile-tab-btn" data-panel="mobile-evidence-panel">
-    <span class="icon">🌐</span>
-    <span class="label">Evidence</span>
-  </button>
-  <button class="mobile-tab-btn" data-panel="mobile-report-panel">
-    <span class="icon">📄</span>
-    <span class="label">Report</span>
-  </button>
-  <button class="mobile-tab-btn" data-panel="mobile-stats-panel">
-    <span class="icon">📊</span>
-    <span class="label">Stats</span>
-  </button>
-</nav>
-
-</div><!-- end .app -->
-
 <script>
-const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s), sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const $=s=>document.querySelector(s), sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let agents=[], SOURCES=[], SEARCHES=[], FINAL="", CUR=null, t0=0, running=false, chatMsgs=[], lastStats={};
-const isMobile=()=>window.innerWidth<=768;
-
-/* ---------------- mobile tab navigation ---------------- */
-function initMobileTabs(){
-  const btns=$$(".mobile-tab-btn"), panels=$$(".mobile-panel");
-  btns.forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const panelId=btn.dataset.panel;
-      btns.forEach(b=>b.classList.toggle("active",b===btn));
-      panels.forEach(p=>p.classList.toggle("active",p.id===panelId));
-      if(panelId==="mobile-evidence-panel"){resizeMBrain();}
-    });
-  });
-}
-
-/* ---------------- sync mobile controls with desktop ---------------- */
-function syncMobileControls(){
-  // Sync manual control selects
-  ["size","depth","mode","style","rounds","web"].forEach(id=>{
-    const desktopEl=$("#"+id), mobileEl=$("#"+"m"+id.charAt(0).toUpperCase()+id.slice(1));
-    if(desktopEl&&mobileEl)mobileEl.value=desktopEl.value;
-  });
-  const dGoal=$("#goal"),mGoal=$("#mGoal");
-  if(dGoal&&mGoal)mGoal.value=dGoal.value;
-}
 
 /* ---------------- markdown ---------------- */
 function md(src){
   src=(src||"").replace(/\r/g,""); const B=[];
   src=src.replace(/```(\w*)\n([\s\S]*?)```/g,(m,l,c)=>{B.push(`<pre><code>${esc(c)}</code></pre>`);return `\u0000${B.length-1}\u0000`});
-  const il=t=>esc(t).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>").replace(/(^|[^*])\*([^*\\n]+)\*/g,"$1<i>$2</i>")
-    .replace(/\[([^\]]+)\]\((https?:[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  const il=t=>esc(t).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>").replace(/(^|[^*])\*([^*\n]+)\*/g,"$1<i>$2</i>")
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
   const o=[];let L=null,T=null;const cl=()=>{if(L){o.push(`</${L}>`);L=null}},ct=()=>{if(T){o.push("</table>");T=null}};
   for(const ln of src.split("\n")){let m;
     if(/^\u0000\d+\u0000$/.test(ln.trim())){cl();ct();o.push(B[+ln.trim().slice(1,-1)]);continue}
@@ -482,12 +242,12 @@ function md(src){
     else if(m=ln.match(/^\s*[-*+]\s+(.*)/)){if(L!=="ul"){cl();L="ul";o.push("<ul>")}o.push(`<li>${il(m[1])}</li>`)}
     else if(m=ln.match(/^\s*\d+[.)]\s+(.*)/)){if(L!=="ol"){cl();L="ol";o.push("<ol>")}o.push(`<li>${il(m[1])}</li>`)}
     else if(m=ln.match(/^>\s?(.*)/)){cl();o.push(`<blockquote>${il(m[1])}</blockquote>`)}
-    else if(/^\s*(---|*\*\*)\s*$/.test(ln)){cl();o.push("<hr>")}
+    else if(/^\s*(---|\*\*\*)\s*$/.test(ln)){cl();o.push("<hr>")}
     else if(!ln.trim())cl();else{cl();o.push(`<p>${il(ln)}</p>`)}}
   cl();ct();return o.join("\n");
 }
 
-/* ---------------- neural brain (canvas) - desktop ---------------- */
+/* ---------------- neural brain (canvas) ---------------- */
 const cv=$("#brain"), ctx=cv.getContext("2d"); let W=0,H=0,DPR=1;
 function resize(){const r=cv.getBoundingClientRect();DPR=window.devicePixelRatio||1;W=r.width;H=r.height;cv.width=Math.max(1,W*DPR);cv.height=Math.max(1,H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);layout()}
 window.addEventListener("resize",resize);
@@ -521,14 +281,18 @@ function draw(ts){
     ctx.fillStyle="rgba(120,150,230,.32)";ctx.beginPath();ctx.arc(ax,ay,a.r,0,Math.PI*2);ctx.fill()}
   if(running&&Math.random()<.055){const a=ambient[Math.floor(Math.random()*ambient.length)],b=ambient[Math.floor(Math.random()*ambient.length)];pulses.push({a:{x:a.x*W,y:a.y*H},b:{x:b.x*W,y:b.y*H},t:0,sp:.018,c:[110,140,245],amb:1})}
   neurons.forEach(n=>{if(!n)return;n.x+=(n.tx-n.x)*.065;n.y+=(n.ty-n.y)*.065;n.fire*=.95});core.fire*=.95;
+  // visible internet-to-queen trunk, with a scan beam while queries are running
   const searching=SEARCHES.some(q=>q.stage==="searching");
   ctx.save();ctx.beginPath();ctx.moveTo(gate.x+18,gate.y);ctx.quadraticCurveTo((gate.x+core.x)/2,gate.y-38,core.x-29,core.y);
   ctx.strokeStyle=searching?"rgba(62,230,255,.55)":"rgba(62,230,255,.18)";ctx.lineWidth=searching?2:1;ctx.setLineDash(searching?[5,7]:[]);ctx.lineDashOffset=-ts/55;ctx.stroke();ctx.restore();
+  // ordinary agent synapses
   agents.forEach((a,i)=>{const n=neurons[i];if(!n)return;const src=a.parent!=null?neurons[a.parent]:core;if(!src)return;
     const c=a.parent!=null?[192,92,255]:(COL[a.status]||COL.queued),act=a.status==="working"||a.status==="researching";
     const mx=(src.x+n.x)/2+(n.y-src.y)*.15,my=(src.y+n.y)/2-(n.x-src.x)*.15;
-    ctx.strokeStyle=rgba(c,act?.48:.19);ctx.lineWidth=act?1.7:1;ctx.beginPath();ctx.moveTo(src.x,src.y);ctx.quadraticCurveTo(mx,my,n.x,n.y);ctx.stroke();n.mx=mx;n.my=my});
+    ctx.strokeStyle=rgba(c,act?.48:.19);ctx.lineWidth=act?1.7:1;ctx.beginPath();ctx.moveTo(src.x,src.y);ctx.quadraticCurveTo(mx,my,n.x,n.y);ctx.stroke();n.mx=mx;n.my=my;
+  });
   for(let i=0;i<agents.length;i++)for(let j=i+1;j<agents.length;j++){const a=neurons[i],b=neurons[j];if(!a||!b)continue;const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<100){ctx.strokeStyle=`rgba(90,120,200,${.10*(1-d/100)})`;ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}
+  // evidence packets travel from the public-web gateway to the agent that requested them
   flows=flows.filter(f=>f.age<1.35);flows.forEach(f=>{f.age+=.012;f.t=Math.min(1,f.t+.018);const target=f.owner_i>=0&&neurons[f.owner_i]?neurons[f.owner_i]:core;
     const sx=gate.x+17,sy=gate.y,tx=target.x,ty=target.y,mx=(sx+tx)/2,my=(sy+ty)/2-30,u=f.t;
     const x=(1-u)*(1-u)*sx+2*(1-u)*u*mx+u*u*tx,y=(1-u)*(1-u)*sy+2*(1-u)*u*my+u*u*ty;
@@ -541,15 +305,18 @@ function draw(ts){
     else{x=p.a.x+(p.b.x-p.a.x)*t;y=p.a.y+(p.b.y-p.a.y)*t}
     const g=ctx.createRadialGradient(x,y,0,x,y,p.amb?5:9);g.addColorStop(0,rgba(p.c,.95));g.addColorStop(1,rgba(p.c,0));ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,p.amb?5:9,0,Math.PI*2);ctx.fill()});
   agents.forEach((a,i)=>{if((a.status==="working"||a.status==="researching")&&Math.random()<.025)fire(i)});
+  // rotating public-web gateway and scanning rings
   const pulse=4+Math.sin(ts/260)*2+(searching?5:0),gx=gate.x,gy=gate.y;
   for(let r=0;r<3;r++){ctx.beginPath();ctx.arc(gx,gy,18+r*8+((ts/35+r*14)%9),0,Math.PI*2);ctx.strokeStyle=`rgba(62,230,255,${.21-r*.045})`;ctx.lineWidth=1;ctx.stroke()}
   ctx.save();ctx.translate(gx,gy);ctx.rotate(ts/2200);ctx.strokeStyle="rgba(62,230,255,.76)";ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(0,0,24+pulse,9+pulse*.25,.55,0,Math.PI*2);ctx.stroke();ctx.restore();
   const gg=ctx.createRadialGradient(gx,gy,0,gx,gy,36);gg.addColorStop(0,"rgba(62,230,255,.30)");gg.addColorStop(1,"rgba(62,230,255,0)");ctx.fillStyle=gg;ctx.beginPath();ctx.arc(gx,gy,36,0,Math.PI*2);ctx.fill();
   ctx.fillStyle="#0a1721";ctx.strokeStyle="rgba(62,230,255,.95)";ctx.lineWidth=2;ctx.beginPath();ctx.arc(gx,gy,15,0,Math.PI*2);ctx.fill();ctx.stroke();
   ctx.font="17px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("🌐",gx,gy+1);ctx.font="9px system-ui";ctx.fillStyle="#81bfd2";ctx.fillText("PUBLIC WEB",gx,gy+46);ctx.fillText("+ OFFICIAL DATA",gx,gy+58);
+  // queen core
   const cr=27+Math.sin(ts/500)*2+core.fire*8;let g=ctx.createRadialGradient(core.x,core.y,0,core.x,core.y,cr*3.2);g.addColorStop(0,"rgba(255,183,43,.42)");g.addColorStop(1,"rgba(255,183,43,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(core.x,core.y,cr*3.2,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle="rgba(255,183,43,.92)";ctx.lineWidth=2;ctx.beginPath();for(let k=0;k<6;k++){const an=Math.PI/3*k+Math.PI/6+ts/4000;ctx.lineTo(core.x+Math.cos(an)*cr,core.y+Math.sin(an)*cr)}ctx.closePath();ctx.fillStyle="#1a1206";ctx.fill();ctx.stroke();
   ctx.font="20px system-ui";ctx.fillStyle="#fff";ctx.fillText({idle:"🧠",plan:"👑",work:"👑",critic:"🔍",refine:"♻️",synth:"🧬",verify:"🔬",done:"✅"}[phaseName]||"🧠",core.x,core.y+1);
+  // live agents and nested helper clusters
   const R0=agents.length>30?8:agents.length>14?11:15;
   agents.forEach((a,i)=>{const n=neurons[i];if(!n)return;const c=a.parent!=null&&a.status==="queued"?[192,92,255]:(COL[a.status]||COL.queued);
     const r=(a.parent!=null?R0*.68:R0)+n.fire*5+((a.status==="working"||a.status==="researching")?Math.sin(ts/200+n.ph)*1.3:0);
@@ -567,61 +334,20 @@ cv.addEventListener("mousemove",e=>{const r=cv.getBoundingClientRect(),x=e.clien
   else tip.style.display="none"});
 cv.addEventListener("click",e=>{const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;if(Math.hypot(gate.x-x,gate.y-y)<28){showTab("sources");return}neurons.forEach((n,i)=>{if(n&&Math.hypot(n.x-x,n.y-y)<18){showTab("agents");$("#ag"+i)?.scrollIntoView({behavior:"smooth",block:"center"})}})});
 
-/* ---------------- neural brain (canvas) - mobile ---------------- */
-const mCv=$("#mBrain"), mCtx=mCv?mCv.getContext("2d"):null; let mW=0,mH=0,mDPR=1;
-const mAmbient=[]; for(let i=0;i<60;i++) mAmbient.push({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0003,vy:(Math.random()-.5)*.0003,r:Math.random()*1.4+.3});
-function resizeMBrain(){if(!mCv)return;const r=mCv.getBoundingClientRect();mDPR=window.devicePixelRatio||1;mW=r.width;mH=r.height;mCv.width=Math.max(1,mW*mDPR);mCv.height=Math.max(1,mH*mDPR);mCtx.setTransform(mDPR,0,0,mDPR,0,0)}
-function mDraw(ts){
-  if(!mW||!H||!mCtx){requestAnimationFrame(mDraw);return}
-  mCtx.clearRect(0,0,mW,mH);
-  mAmbient.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>1)p.vx*=-1;if(p.y<0||p.y>1)p.vy*=-1});
-  const mCx=mW*.6,mCy=mH*.5,mGate={x:Math.max(28,mW*.08),y:mH*.5};
-  // Draw ambient
-  for(let i=0;i<mAmbient.length;i++){const a=mAmbient[i],ax=a.x*mW,ay=a.y*mH;
-    mCtx.fillStyle="rgba(120,150,230,.25)";mCtx.beginPath();mCtx.arc(ax,ay,a.r,0,Math.PI*2);mCtx.fill()}
-  // Gateway
-  mCtx.fillStyle="#0a1721";mCtx.strokeStyle="rgba(62,230,255,.9)";mCtx.lineWidth=1.5;mCtx.beginPath();mCtx.arc(mGate.x,mGate.y,10,0,Math.PI*2);mCtx.fill();mCtx.stroke();
-  mCtx.font="11px system-ui";mCtx.fillStyle="#fff";mCtx.textAlign="center";mCtx.fillText("🌐",mGate.x,mGate.y+1);
-  // Core
-  const mCr=18+Math.sin(ts/500)*2;let mg=mCtx.createRadialGradient(mCx,mCy,0,mCx,mCy,mCr*2.5);mg.addColorStop(0,"rgba(255,183,43,.4)");mg.addColorStop(1,"rgba(255,183,43,0)");mCtx.fillStyle=mg;mCtx.beginPath();mCtx.arc(mCx,mCy,mCr*2.5,0,Math.PI*2);mCtx.fill();
-  mCtx.fillStyle="#1a1206";mCtx.strokeStyle="rgba(255,183,43,.9)";mCtx.lineWidth=1.5;mCtx.beginPath();mCtx.arc(mCx,mCy,mCr,0,Math.PI*2);mCtx.fill();mCtx.stroke();
-  mCtx.font="14px system-ui";mCtx.fillStyle="#fff";mCtx.fillText({idle:"🧠",plan:"👑",work:"👑",critic:"🔍",refine:"♻️",synth:"🧬",verify:"🔬",done:"✅"}[phaseName]||"🧠",mCx,mCy+1);
-  // Trunk
-  mCtx.strokeStyle="rgba(62,230,255,.3)";mCtx.lineWidth=1;mCtx.setLineDash([3,4]);mCtx.beginPath();mCtx.moveTo(mGate.x+12,mGate.y);mCtx.quadraticCurveTo((mGate.x+mCx)/2,mGate.y-20,mCx-18,mCy);mCtx.stroke();mCtx.setLineDash([]);
-  // Agents
-  agents.forEach((a,i)=>{const n=neurons[i];if(!n)return;const c=a.parent!=null?[192,92,255]:(COL[a.status]||COL.queued);
-    const r=10+(((a.status==="working"||a.status==="researching")?Math.sin(ts/200+i)*1.5:0));
-    mCtx.fillStyle="#0b1020";mCtx.strokeStyle=rgba(c,.9);mCtx.lineWidth=1.5;mCtx.beginPath();mCtx.arc(n.x*mW/W||mCx,n.y*mH/H||mCy,r,0,Math.PI*2);mCtx.fill();mCtx.stroke();
-    mCtx.font=`${Math.round(r*.9)}px system-ui`;mCtx.fillStyle="#fff";mCtx.fillText(a.emoji||"🐝",n.x*mW/W||mCx,n.y*mH/H||mCy+1)});
-  requestAnimationFrame(mDraw);
-}
-
 /* ---------------- UI helpers ---------------- */
 function showTab(t){document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x.dataset.t===t));document.querySelectorAll(".pane").forEach(x=>x.classList.toggle("on",x.id==="p-"+t));if(t==="hist")loadHist();if(t==="sources")renderSources();if(t==="agents")renderAgents()}
 document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>showTab(x.dataset.t));
-function showMTab(t){$$("#mobile-report-panel .tab").forEach(x=>x.classList.toggle("on",x.dataset.t===t));$$("#mobile-report-panel .pane").forEach(x=>x.classList.toggle("on",x.id==="mp-"+t));if(t==="hist")loadHist();if(t==="sources")renderMSources();if(t==="agents")renderMAgents()}
-$$("#mobile-report-panel .tab").forEach(x=>x.onclick=()=>showMTab(x.dataset.t));
-function log(m,c="",t=null){const d=document.createElement("div");if(c)d.className=c;d.textContent=`[${t!=null?Math.round(t)+"s":new Date().toLocaleTimeString()}] ${m}`;const logEl=$("#log");if(logEl)logEl.appendChild(d);const mLogEl=$("#mLog");if(mLogEl){const d2=d.cloneNode(true);mLogEl.appendChild(d2)}const pLog=$("#p-log");if(pLog)pLog.scrollTop=1e9}
+function log(m,c="",t=null){const d=document.createElement("div");if(c)d.className=c;d.textContent=`[${t!=null?Math.round(t)+"s":new Date().toLocaleTimeString()}] ${m}`;$("#log").appendChild(d);$("#p-log").scrollTop=1e9}
 function card(a,i){return `<div class="agent ${a.parent!=null?"sub":""}" id="ag${i}"><div class="top"><span class="emo">${esc(a.emoji)}</span><div><div class="nm">${esc(a.name)}</div><div class="rl">${esc(a.role)}${a.parent!=null?` · helper of ${esc(agents[a.parent]?.name)}`:""}</div></div><span class="st ${a.status}">${a.status}</span></div>
   <div class="task">${esc(a.task)}${a.query?`<br><span style="color:var(--cy)">🔎 ${esc(a.query)}</span>`:""}</div><div class="out md">${a.output?md(a.output):""}</div></div>`}
-function mCard(a,i){return `<div class="agent ${a.parent!=null?"sub":""}" id="mag${i}"><div class="top"><span class="emo">${esc(a.emoji)}</span><div><div class="nm">${esc(a.name)}</div><div class="rl">${esc(a.role)}</div></div><span class="st ${a.status}">${a.status}</span></div>
-  <div class="task">${esc(a.task)}</div><div class="out md">${a.output?md(a.output):""}</div></div>`}
 function renderAgents(){$("#agents").innerHTML=agents.map(card).join("");$("#agCount").textContent=agents.length?`(${agents.length})`:"";layout()}
-function renderMAgents(){const el=$("#mAgents");if(!el)return;el.innerHTML=agents.map(mCard).join("");const ac=$("#mAgCount");if(ac)ac.textContent=agents.length?`(${agents.length})`:""}
 function upd(i){const el=$("#ag"+i);if(el)el.outerHTML=card(agents[i],i);else renderAgents()}
-function phase(p){phaseName=p;const o=["plan","work","critic","refine","synth","verify"],k=o.indexOf(p);document.querySelectorAll(".ph").forEach(e=>{const j=o.indexOf(e.dataset.p);e.className="ph"+(p==="done"||j<k?" done":j===k?" on":"")});core.fire=1;setLive(p==="verify"?"CROSS-CHECKING":p==="done"?"COMPLETE":p.toUpperCase());const msPhase=$("#msPhase");if(msPhase)msPhase.textContent=p.toUpperCase()}
-function setLive(text){const el=$("#liveState");if(el)el.textContent=text;const mEl=$("#mLiveState");if(mEl)mEl.textContent=text;const msLive=$("#msLive");if(msLive)msLive.textContent=text}
+function phase(p){phaseName=p;const o=["plan","work","critic","refine","synth","verify"],k=o.indexOf(p);document.querySelectorAll(".ph").forEach(e=>{const j=o.indexOf(e.dataset.p);e.className="ph"+(p==="done"||j<k?" done":j===k?" on":"")});core.fire=1;setLive(p==="verify"?"CROSS-CHECKING":p==="done"?"COMPLETE":p.toUpperCase())}
+function setLive(text){const el=$("#liveState");if(el)el.textContent=text}
 function stats(s){lastStats=s||{};$("#sAgents").textContent=s.agents??0;$("#sSubs").textContent=s.subswarms??0;$("#sSources").textContent=s.sources??0;$("#sRead").textContent=s.pages_read??0;$("#sCalls").textContent=s.calls??0;$("#sCalcs").textContent=s.calcs??0;
   $("#sVerified").textContent=s.claims?Math.round(100*(s.verified||0)/s.claims)+"%":"N/A";
-  $("#feedFoot").textContent=`${s.sources??SOURCES.length} web results · ${s.pages_read??SOURCES.filter(x=>x.page_read).length} pages opened · ${s.claims?`${s.verified||0}/${s.claims} numeric text matches`:"numeric check: N/A"}`;
-  $("#srcCount").textContent=SOURCES.length?`(${SOURCES.length})`:"";renderFeed();
-  // Sync mobile stats
-  const msA=$("#msAgents"),msS=$("#msSubs"),msSo=$("#msSources"),msR=$("#msRead"),msV=$("#msVerified"),msC=$("#msCalls"),msCa=$("#msCalcs");
-  if(msA)msA.textContent=s.agents??0;if(msS)msS.textContent=s.subswarms??0;if(msSo)msSo.textContent=s.sources??0;if(msR)msR.textContent=s.pages_read??0;
-  if(msC)msC.textContent=s.calls??0;if(msCa)msCa.textContent=s.calcs??0;
-  if(msV)msV.textContent=s.claims?Math.round(100*(s.verified||0)/s.claims)+"%":"N/A";
-  const mFeedFoot=$("#mFeedFoot");if(mFeedFoot)mFeedFoot.textContent=`${s.sources??SOURCES.length} web results · ${s.pages_read??SOURCES.filter(x=>x.page_read).length} pages opened`;
-  const mSrc=$("#mSrcCount");if(mSrc)mSrc.textContent=SOURCES.length?`(${SOURCES.length})`:"";renderMFeed()}
+  $("#feedFoot").textContent=`${s.sources??SOURCES.length} web results · ${s.pages_read??SOURCES.filter(x=>x.page_read).length} pages opened · ${s.claims?`${s.verified||0}/${s.claims} numeric text matches`:`numeric check: N/A`}`;
+  $("#srcCount").textContent=SOURCES.length?`(${SOURCES.length})`:"";renderFeed()}
 function sourceHref(u){return /^https?:\/\//i.test(String(u||""))?String(u):"#"}
 function domain(u){try{return new URL(u).hostname.replace(/^www\./,"")}catch{return "source"}}
 function sourceCard(s){const st=s.kind==="official_api"?"OFFICIAL API":s.page_read?"PAGE OPENED":"SEARCH RESULT", trust=s.trust>0?"⭐ domain heuristic":s.trust<0?"⚠ weak-domain flag":"unrated domain";
@@ -633,53 +359,32 @@ function renderFeed(){const box=$("#evidenceFeed");if(!box)return;const rows=SOU
     const status=s.kind==="official_api"||s.page_read?"read":s.status==="reading"?"reading":s.status==="verifying"?"reading":s.status==="read_error"?"failed":"";
     const stage=s.status==="verifying"?"VERIFYING…":s.page_read?"PAGE OPENED":s.status==="reading"?"OPENING…":s.status==="read_error"?"PAGE UNAVAILABLE":"SEARCH RESULT";
     return `<div class="evcard ${status}"><a class="evtitle" href="${esc(sourceHref(s.url))}" target="_blank" rel="noopener">${esc(s.title||domain(s.url))}</a><div class="evsnippet">${esc((s.snippet||s.text||"").slice(0,210))}</div><div class="evmeta"><span>${esc(s.engine||s.kind||"search")} · ${esc(s.publisher||domain(s.url))}</span><span>${stage}</span></div></div>`}).join(""):'<div class="feedempty">Search queries, source snippets and page reads stream here as they happen.</div>';box.scrollTop=0}
-function renderMFeed(){const box=$("#mEvidenceFeed");if(!box)return;const rows=SOURCES.slice(-8).reverse();box.innerHTML=rows.length?rows.map(s=>{
-    const status=s.kind==="official_api"||s.page_read?"read":s.status==="reading"?"reading":s.status==="read_error"?"failed":"";
-    const stage=s.page_read?"PAGE OPENED":s.status==="reading"?"OPENING…":s.status==="read_error"?"UNAVAILABLE":"RESULT";
-    return `<div class="evcard ${status}"><a class="evtitle" href="${esc(sourceHref(s.url))}" target="_blank" rel="noopener">${esc(s.title||domain(s.url))}</a><div class="evsnippet">${esc((s.snippet||s.text||"").slice(0,160))}</div><div class="evmeta"><span>${esc(s.engine||s.kind||"search")}</span><span>${stage}</span></div></div>`}).join(""):'<div class="feedempty">Search queries, source snippets and page reads stream here.</div>';box.scrollTop=0}
 function renderQueries(){const box=$("#queryList");if(!box)return;const rows=SEARCHES.slice(-5).reverse();box.innerHTML=rows.length?rows.map(q=>`<div class="qrow ${q.stage==="searching"?"searching":""}"><div>⌕ ${esc(q.query)}</div><div class="qmeta"><span>${esc(q.engine||q.stage||"search")}${q.newsEngine?` + ${esc(q.newsEngine)}`:""}</span><span>${q.stage==="searching"?"SEARCHING…":q.error?"RETRY/FALLBACK":`${q.count||0} hits`}</span></div></div>`).join(""):'<div class="qrow">No search yet <div class="qmeta"><span>Waiting for mission</span><span>—</span></div></div>'}
-function renderMQueries(){const box=$("#mQueryList");if(!box)return;const rows=SEARCHES.slice(-5).reverse();box.innerHTML=rows.length?rows.map(q=>`<div class="qrow ${q.stage==="searching"?"searching":""}"><div>⌕ ${esc(q.query)}</div><div class="qmeta"><span>${esc(q.engine||q.stage||"search")}</span><span>${q.stage==="searching"?"SEARCHING…":q.error?"RETRY":`${q.count||0} hits`}</span></div></div>`).join(""):'<div class="qrow">No search yet <div class="qmeta"><span>Waiting</span><span>—</span></div></div>'}
 function onSearch(ev){let q=SEARCHES.find(x=>x.query===ev.query&&x.owner_i===ev.owner_i);if(!q){q={query:ev.query,owner_i:ev.owner_i,count:0};SEARCHES.push(q)}
   if(ev.stage==="searching"){q.stage="searching";setLive("SEARCHING")}
   else if(ev.stage==="complete"){q.stage="complete";q.engine=ev.engine;q.count=ev.count||0;setLive("COLLECTING")}
   else if(ev.stage==="news_complete"){q.newsEngine=ev.engine;q.count+=ev.count||0;setLive("COLLECTING")}
   else if(ev.stage==="error"){q.stage="error";q.error=ev.error;setLive("RETRYING")}
-  q.updated=Date.now();renderQueries();renderMQueries()}
+  q.updated=Date.now();renderQueries()}
 function onSource(ev){const src=ev.source||{};let s=SOURCES.find(x=>x.url===src.url);
   if(!s){s={...src};SOURCES.push(s)}else Object.assign(s,src);
   s.status=ev.stage;if(src.excerpt)s.text=src.excerpt;if(ev.owner_i!==undefined)s.owner_i=ev.owner_i;
   flow({owner_i:ev.owner_i,stage:ev.stage,kind:s.kind});
-  $("#srcCount").textContent=`(${SOURCES.length})`;renderFeed();renderMFeed();
-  if($("#p-sources").classList.contains("on"))renderSources();
-  if($("#mp-sources").classList.contains("on"))renderMSources()}
+  $("#srcCount").textContent=`(${SOURCES.length})`;renderFeed();if($("#p-sources").classList.contains("on"))renderSources()}
 function renderSources(){const term=($("#sourceFilter")?.value||"").toLowerCase(),kind=$("#sourceKind")?.value||"all";
   const list=SOURCES.filter(s=>{
     const text=[s.title,s.url,s.query,...(s.queries||[]),s.engine,s.snippet].join(" ").toLowerCase();if(term&&!text.includes(term))return false;
     if(kind==="read"&&!s.page_read)return false;if(kind==="result"&&(s.page_read||s.kind==="official_api"))return false;if(kind==="official"&&s.kind!=="official_api")return false;return true;
-  }).slice().reverse();$("#sourceSummary").textContent=`${list.length} shown · ${SOURCES.length} unique URLs`;$("#sourceList").innerHTML=list.length?list.map(sourceCard).join(""):'<div class="small">No matching evidence.</div>'}
-function renderMSources(){const term=($("#mSourceFilter")?.value||"").toLowerCase(),kind=$("#mSourceKind")?.value||"all";
-  const list=SOURCES.filter(s=>{
-    const text=[s.title,s.url,s.query,...(s.queries||[]),s.engine,s.snippet].join(" ").toLowerCase();if(term&&!text.includes(term))return false;
-    if(kind==="read"&&!s.page_read)return false;if(kind==="result"&&(s.page_read||s.kind==="official_api"))return false;if(kind==="official"&&s.kind!=="official_api")return false;return true;
-  }).slice().reverse();$("#mSourceList").innerHTML=list.length?list.map(sourceCard).join(""):'<div class="small">No matching evidence.</div>'}
+  }).slice().reverse();$("#sourceSummary").textContent=`${list.length} shown · ${SOURCES.length} unique URLs`;$("#sourceList").innerHTML=list.length?list.map(sourceCard).join(""):'<div class="small">No matching evidence. Turn Web research on for the mission to collect sources.</div>'}
 $("#sourceFilter").addEventListener("input",renderSources);$("#sourceKind").addEventListener("change",renderSources);
-const mSF=$("#mSourceFilter"),mSK=$("#mSourceKind");
-if(mSF)mSF.addEventListener("input",renderMSources);if(mSK)mSK.addEventListener("change",renderMSources);
-setInterval(()=>{if(running){const el=$("#sTime");if(el)el.textContent=Math.round((Date.now()-t0)/1000)+"s";const mel=$("#msTime");if(mel)mel.textContent=Math.round((Date.now()-t0)/1000)+"s"}},1000);
+setInterval(()=>{if(running)$("#sTime").textContent=Math.round((Date.now()-t0)/1000)+"s"},1000);
 
 /* ---------------- mission streaming ---------------- */
 const queue=[];
 async function watch(id,goal){
   if(running){queue.push([id,goal]);log(`Queued mission view: ${goal.slice(0,60)}`,"a");return}
-  running=true;CUR=id;t0=Date.now();agents=[];SOURCES=[];SEARCHES=[];neurons=[];pulses=[];flows=[];FINAL="";$("#final").innerHTML="";const mFinal=$("#mFinal");if(mFinal)mFinal.innerHTML="";
-  $("#log").innerHTML="";const mLog=$("#mLog");if(mLog)mLog.innerHTML="";
-  $("#sTime").textContent="0s";const msTime=$("#msTime");if(msTime)msTime.textContent="0s";
-  renderAgents();renderMAgents();renderQueries();renderMQueries();renderFeed();renderMFeed();showTab("final");
-  const msMission=$("#msMission");if(msMission)msMission.textContent=goal;
-  phase("plan");
-  $("#mtitle").textContent="▶ "+goal;const mMtitle=$("#mMtitle");if(mMtitle)mMtitle.textContent="▶ "+goal;
-  $("#run").disabled=true;$("#stop").disabled=false;const mRun=$("#mRun"),mStop=$("#mStop");if(mRun)mRun.disabled=true;if(mStop)mStop.disabled=false;
-  stats({agents:0,subswarms:0,sources:0,pages_read:0,calls:0,calcs:0,claims:0,verified:0});setLive("SCOUTING");
+  running=true;CUR=id;t0=Date.now();agents=[];SOURCES=[];SEARCHES=[];neurons=[];pulses=[];flows=[];FINAL="";$("#final").innerHTML="";$("#log").innerHTML="";$("#sTime").textContent="0s";renderAgents();renderQueries();renderFeed();showTab("final");phase("plan");
+  $("#mtitle").textContent="▶ "+goal;$("#run").disabled=true;$("#stop").disabled=false;stats({agents:0,subswarms:0,sources:0,pages_read:0,calls:0,calcs:0,claims:0,verified:0});setLive("SCOUTING");
   let since=0,done=false;
   while(!done){let ev;try{ev=(await (await fetch(`/api/events?id=${id}&since=${since}`)).json()).events||[]}catch{await sleep(2000);continue}
     for(const e of ev){since=e.n+1;
@@ -688,47 +393,34 @@ async function watch(id,goal){
       else if(e.type==="stats")stats(e.stats);
       else if(e.type==="search")onSearch(e);
       else if(e.type==="source")onSource(e);
-      else if(e.type==="spawn"){agents[e.i]=e.agent;renderAgents();renderMAgents();fire(e.i)}
-      else if(e.type==="agent"){const was=agents[e.i]?.status;agents[e.i]=e.agent;upd(e.i);renderMAgents();if(was!==e.agent.status)fire(e.i);setLive(e.agent.status==="researching"?"RESEARCHING":e.agent.status==="working"?"AI QUEUE · 1 LANE":e.agent.status==="done"?"WEAVING RESULTS":"AGENTS ACTIVE")}
+      else if(e.type==="spawn"){agents[e.i]=e.agent;renderAgents();fire(e.i)}
+      else if(e.type==="agent"){const was=agents[e.i]?.status;agents[e.i]=e.agent;upd(e.i);if(was!==e.agent.status)fire(e.i);setLive(e.agent.status==="researching"?"RESEARCHING":e.agent.status==="working"?"AI QUEUE · 1 LANE":e.agent.status==="done"?"WEAVING RESULTS":"AGENTS ACTIVE")}
       else if(e.type==="pulse")fire(e.i);
       else if(e.type==="subswarm"){fire(e.parent);log("🧠 helper swarm spawned","g")}
-      else if(e.type==="final"){FINAL=e.md;$("#final").innerHTML=md(e.md);const mFinal=$("#mFinal");if(mFinal)mFinal.innerHTML=md(e.md);phase("done");
-        addBot(`✅ Mission finished: **${goal.slice(90)}**. The report is ready.`)}
+      else if(e.type==="final"){FINAL=e.md;$("#final").innerHTML=md(e.md);phase("done");
+        addBot(`✅ Mission finished: **${goal.slice(0,90)}**. The report is ready. You can keep browsing Evidence, Agents or Log while the mission ends.`)}
       else if(e.type==="done")done=true}}
   running=false;$("#run").disabled=false;$("#stop").disabled=true;
-  const mRun2=$("#mRun"),mStop2=$("#mStop");if(mRun2)mRun2.disabled=false;if(mStop2)mStop2.disabled=true;
   if(queue.length){const [i,g]=queue.shift();watch(i,g)}
 }
 
 /* ---------------- Commander chat ---------------- */
 function addMsg(role,text,launched=[]){const d=document.createElement("div");d.className="msg "+(role==="user"?"u":"b");
   d.innerHTML=(role==="user"?"":`<div class="who">COMMANDER</div>`)+md(text)+launched.map(l=>`<div class="launch" data-id="${l.id}" data-g="${esc(l.goal)}">🚀 Swarm launched · ${l.size} agents · ${esc(l.mode)}<br><span class="small">${esc(l.goal.slice(0,140))}</span></div>`).join("");
-  const chatEl=$("#chat");if(chatEl){chatEl.appendChild(d);chatEl.scrollTop=1e9}
-  const mChatEl=$("#mChat");if(mChatEl){const d2=d.cloneNode(true);d2.querySelectorAll(".launch").forEach(x=>x.onclick=()=>{if(CUR!==x.dataset.id)watch(x.dataset.id,x.dataset.g)});mChatEl.appendChild(d2);mChatEl.scrollTop=1e9}}
+  $("#chat").appendChild(d);$("#chat").scrollTop=1e9;
+  d.querySelectorAll(".launch").forEach(x=>x.onclick=()=>{if(CUR!==x.dataset.id)watch(x.dataset.id,x.dataset.g)})}
 function addBot(t){addMsg("assistant",t);chatMsgs.push({role:"assistant",content:t})}
-function send(txt){
-  txt=(txt||$("#cin").value||$("#mcin").value).trim();if(!txt)return;
-  $("#cin").value="";const mcin=$("#mcin");if(mcin)mcin.value="";
-  addMsg("user",txt);chatMsgs.push({role:"user",content:txt});
-  const ty=document.createElement("div");ty.className="msg b typing";ty.innerHTML="<span></span><span></span><span></span>";
-  const chatEl=$("#chat");if(chatEl){chatEl.appendChild(ty);chatEl.scrollTop=1e9}
-  const mty=ty.cloneNode(true);const mChatEl=$("#mChat");if(mChatEl){mChatEl.appendChild(mty);mChatEl.scrollTop=1e9}
-  const csend=$("#csend");if(csend)csend.disabled=true;const mcsend=$("#mcsend");if(mcsend)mcsend.disabled=true;
+async function send(txt){
+  txt=(txt||$("#cin").value).trim();if(!txt)return;$("#cin").value="";addMsg("user",txt);chatMsgs.push({role:"user",content:txt});
+  const ty=document.createElement("div");ty.className="msg b typing";ty.innerHTML="<span></span><span></span><span></span>";$("#chat").appendChild(ty);$("#chat").scrollTop=1e9;$("#csend").disabled=true;
   try{const r=await (await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:chatMsgs})})).json();
-    ty.remove();if(mty)mty.remove();
-    const replyText=(r.reply||"").trim()||((r.launched||[]).length?"Swarm launched. I'm streaming its research steps, sources and final report here.":"I couldn't get a reply from the free model just now. Please retry.");
-    addMsg("assistant",replyText,r.launched||[]);chatMsgs.push({role:"assistant",content:replyText+(r.launched?.length?`\n[launched ${r.launched.length} swarm(s)]`:"")});
+    ty.remove();const replyText=(r.reply||"").trim()||((r.launched||[]).length?"Swarm launched. I’m streaming its research steps, sources and final report here.":"I couldn’t get a reply from the free model just now. Please retry.");addMsg("assistant",replyText,r.launched||[]);chatMsgs.push({role:"assistant",content:replyText+(r.launched?.length?`\n[launched ${r.launched.length} swarm(s)]`:"")});
     (r.launched||[]).forEach(l=>watch(l.id,l.goal))}
-  catch(e){ty.remove();if(mty)mty.remove();addMsg("assistant","Connection issue — is server.py running? "+e.message)}
-  const csend2=$("#csend");if(csend2)csend2.disabled=false;const mcsend2=$("#mcsend");if(mcsend2)mcsend2.disabled=false;
-}
+  catch(e){ty.remove();addMsg("assistant","Connection issue — is server.py running? "+e.message)}
+  $("#csend").disabled=false}
 $("#csend").onclick=()=>send();$("#cin").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}});
-const mcsend=$("#mcsend"),mcin=$("#mcin");
-if(mcsend)mcsend.onclick=()=>send();
-if(mcin)mcin.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}});
 const CCH=["Find every way to make money with AI starting from $0","Launch 3 swarms: AI services, digital products, micro-SaaS","What can I automate and sell to Toronto small businesses?","Find free grants & funding I could qualify for in Ontario"];
 $("#cchips").innerHTML=CCH.map(c=>`<span>${esc(c)}</span>`).join("");$("#cchips").onclick=e=>{if(e.target.tagName==="SPAN")send(e.target.textContent)};
-const mcchips=$("#mCchips");if(mcchips){mcchips.innerHTML=CCH.map(c=>`<span>${esc(c)}</span>`).join("");mcchips.onclick=e=>{if(e.target.tagName==="SPAN")send(e.target.textContent)}}
 
 /* ---------------- manual control ---------------- */
 const PRESETS={"🤖 Every AI money path":["Find the broadest realistic set of ways to earn using AI in 2026 starting with $0: automation services, micro-SaaS, digital products, content, e-commerce, freelancing and lead-gen. Rank opportunities with cited current demand/pricing; label estimates and risks; give first steps.","money"],
@@ -740,43 +432,22 @@ const PRESETS={"🤖 Every AI money path":["Find the broadest realistic set of w
  "🎮 Build a game":["Build a complete playable Snake game in a single HTML file with score and high-score saving.","code"]};
 $("#presets").innerHTML=Object.keys(PRESETS).map(k=>`<span>${k}</span>`).join("");
 $("#presets").onclick=e=>{const p=PRESETS[e.target.textContent];if(p){$("#goal").value=p[0];$("#mode").value=p[1];$("#web").value=p[1]==="code"?"0":"1"}};
-const mPresets=$("#mPresets");if(mPresets){mPresets.innerHTML=Object.keys(PRESETS).map(k=>`<span>${k}</span>`).join("");mPresets.onclick=e=>{const p=PRESETS[e.target.textContent];if(p){const mGoal=$("#mGoal"),mMode=$("#mMode"),mWeb=$("#mWeb");if(mGoal)mGoal.value=p[0];if(mMode)mMode.value=p[1];if(mWeb)mWeb.value=p[1]==="code"?"0":"1"}}}
 function eta(){const n=+$("#size").value,r=+$("#rounds").value,d=$("#depth").value;const f={fast:0,accurate:.35,max:.7}[d];const calls=Math.ceil(4+n*(1+r)+n*f);const lo=Math.max(1,Math.round(calls*35/60)),hi=Math.max(lo+1,Math.round(calls*65/60));$("#eta").textContent=`≈ ${calls} AI calls · rough ${lo}–${hi} min (keyless free model; one call at a time). Web searches run alongside.`}
-function mEta(){const el=$("#mSize");if(!el)return;const n=+el.value,r=+$("#mRounds").value,d=$("#mDepth").value;const f={fast:0,accurate:.35,max:.7}[d];const calls=Math.ceil(4+n*(1+r)+n*f);const lo=Math.max(1,Math.round(calls*35/60)),hi=Math.max(lo+1,Math.round(calls*65/60));const etaEl=$("#mEta");if(etaEl)etaEl.textContent=`≈ ${calls} AI calls · rough ${lo}–${hi} min`}
 ["#size","#rounds","#depth"].forEach(s=>$(s).addEventListener("change",eta));eta();
-const mSize=$("#mSize"),mRounds=$("#mRounds"),mDepth=$("#mDepth");
-if(mSize)mSize.addEventListener("change",mEta);if(mRounds)mRounds.addEventListener("change",mEta);if(mDepth)mDepth.addEventListener("change",mEta);
-if(mSize)mEta();
 $("#run").onclick=async()=>{const goal=$("#goal").value.trim();if(!goal)return $("#goal").focus();
   const r=await (await fetch("/api/mission",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({goal,size:+$("#size").value,rounds:+$("#rounds").value,depth:$("#depth").value,mode:$("#mode").value,style:$("#style").value,web:$("#web").value==="1"})})).json();
   if(r.id)watch(r.id,goal)};
 $("#stop").onclick=()=>CUR&&fetch("/api/stop",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:CUR})});
-const mRun=$("#mRun"),mStop=$("#mStop");
-if(mRun)mRun.onclick=async()=>{const goal=$("#mGoal").value.trim();if(!goal)return $("#mGoal").focus();
-  const r=await (await fetch("/api/mission",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({goal,size:+$("#mSize").value,rounds:+$("#mRounds").value,depth:$("#mDepth").value,mode:$("#mMode").value,style:$("#mStyle").value,web:$("#mWeb").value==="1"})})).json();
-  if(r.id)watch(r.id,goal)};
-if(mStop)mStop.onclick=()=>CUR&&fetch("/api/stop",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:CUR})});
 $("#copy").onclick=()=>{navigator.clipboard?.writeText(FINAL);log("Copied.","g")};
 $("#dl").onclick=()=>{if(!FINAL)return;const all=FINAL+"\n\n---\n# Agent reports\n\n"+agents.map(a=>`## ${a.emoji} ${a.name} — ${a.role}\n${a.output}`).join("\n\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([all],{type:"text/markdown"}));a.download="hive-report.md";a.click()};
-const mCopy=$("#mCopy"),mDl=$("#mDl");
-if(mCopy)mCopy.onclick=()=>{navigator.clipboard?.writeText(FINAL);log("Copied.","g")};
-if(mDl)mDl.onclick=()=>{if(!FINAL)return;const all=FINAL+"\n\n---\n# Agent reports\n\n"+agents.map(a=>`## ${a.emoji} ${a.name} — ${a.role}\n${a.output}`).join("\n\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([all],{type:"text/markdown"}));a.download="hive-report.md";a.click()};
 
 /* ---------------- memory ---------------- */
 async function loadHist(){try{const h=(await (await fetch("/api/history")).json()).missions;
-  const html=h.length?h.map(m=>`<div class="hist" data-id="${m.id}"><b>${esc(m.goal.slice(0,120))}</b><div class="d">${esc(m.date)} · ${esc(m.mode||"")} · ${m.stats?.agents||0} agents · ${m.stats?.sources||0} results · ${m.stats?.pages_read||0} pages${m.stats?.claims?` · ${Math.round(100*m.stats.verified/m.stats.claims)}% number match`:" · check N/A"}</div></div>`).join(""):'<div class="small">No saved missions yet.</div>';
-  const histEl=$("#hist");if(histEl)histEl.innerHTML=html;
-  const mHistEl=$("#mHist");if(mHistEl)mHistEl.innerHTML=html;
+  $("#hist").innerHTML=h.length?h.map(m=>`<div class="hist" data-id="${m.id}"><b>${esc(m.goal.slice(0,120))}</b><div class="d">${esc(m.date)} · ${esc(m.mode||"")} · ${m.stats?.agents||0} agents · ${m.stats?.sources||0} results · ${m.stats?.pages_read||0} pages${m.stats?.claims?` · ${Math.round(100*m.stats.verified/m.stats.claims)}% number match`:" · check N/A"}</div></div>`).join(""):'<div class="small">No saved missions yet.</div>';
   document.querySelectorAll(".hist").forEach(x=>x.onclick=async()=>{const d=await (await fetch("/api/load?id="+x.dataset.id)).json();
-    agents=(d.agents||[]).map(a=>({...a,status:"done"}));SOURCES=(d.sources||[]).map(s=>({...s,status:s.page_read?"read":"found"}));SEARCHES=[];neurons=[];flows=[];renderAgents();renderMAgents();renderFeed();renderMSources();FINAL=d.final;
-    $("#final").innerHTML=md(d.final);const mFinal=$("#mFinal");if(mFinal)mFinal.innerHTML=md(d.final);
-    stats({...d.stats,sources:d.stats?.sources??SOURCES.length,pages_read:d.stats?.pages_read??SOURCES.filter(s=>s.page_read).length});
-    $("#mtitle").textContent="🗂 "+d.goal;const mMtitle=$("#mMtitle");if(mMtitle)mMtitle.textContent="🗂 "+d.goal;phase("done");showTab("final")})}catch{}}
+    agents=(d.agents||[]).map(a=>({...a,status:"done"}));SOURCES=(d.sources||[]).map(s=>({...s,status:s.page_read?"read":"found"}));SEARCHES=[];neurons=[];flows=[];renderAgents();renderFeed();renderSources();FINAL=d.final;$("#final").innerHTML=md(d.final);stats({...d.stats,sources:d.stats?.sources??SOURCES.length,pages_read:d.stats?.pages_read??SOURCES.filter(s=>s.page_read).length});$("#mtitle").textContent="🗂 "+d.goal;phase("done");showTab("final")})}catch{}}
 
-/* ---------------- init ---------------- */
-initMobileTabs();
 resize();requestAnimationFrame(draw);
-if(mCtx)requestAnimationFrame(mDraw);
 addBot("I'm **Commander** — a free-model agent running HIVE's workflow, not the Arena assistant embedded in this page. With Web on, HIVE runs public web searches during the mission and opens selected pages; the Evidence panel shows the query, search engine, actual page reads and links. The free model is rate-limited, so its AI calls run one at a time. I can help with money-making research, public-source intelligence and defensive cyber work; I won't access private accounts, classified systems or move money. What should the swarm investigate?");
 if(location.protocol==="file:")addBot("⚠ You opened this as a file. Run `python3 server.py` and open http://localhost:8080");
 </script>

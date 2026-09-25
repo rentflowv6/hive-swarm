@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free
     buildCommand: "echo 'No build needed — pure stdlib'"
-    startCommand: "python3 server.py $PORT"
+    startCommand: "python server.py $PORT || python3 server.py $PORT"
     envVars:
       - key: PYTHON_VERSION
         value: "3.11"

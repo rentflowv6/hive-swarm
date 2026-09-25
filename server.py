@@ -116,9 +116,42 @@ PRESETS = {
         "model": "gpt-4o-mini", "lanes": 3, "requires_key": True,
         "env_key": "GITHUB_API_KEY", "supports_vision": True, "speed": 3
     },
+    # === Zero-Auth Free Endpoints (HIVE Deep Hunt Discoveries) ===
+    "lmsys_arena": {
+        "label": "LMSYS Arena (anonymous frontier)", "base": "https://chat.lmsys.org/queue/join",
+        "model": "claude-3-sonnet", "lanes": 2, "requires_key": False,
+        "full_url": True, "supports_vision": False, "speed": 3,
+        "fn_index": 104, "streaming_sse": True, "session_required": True
+    },
+    "duckduckgo_chat": {
+        "label": "DuckDuckGo AI Chat", "base": "https://duckduckgo.com/chat",
+        "model": "auto", "lanes": 2, "requires_key": False,
+        "full_url": True, "supports_vision": False, "speed": 4,
+        "x_vqd_header": True
+    },
+    "phind": {
+        "label": "Phind (free, code-focused)", "base": "https://phind.com/api/infer",
+        "model": "Phind-70B", "lanes": 2, "requires_key": False,
+        "full_url": True, "supports_vision": False, "speed": 4
+    },
+    "huggingface_spaces": {
+        "label": "HuggingFace Spaces (public)", "base": "https://huggingface.co/api/spaces",
+        "model": "auto", "lanes": 3, "requires_key": False,
+        "full_url": True, "supports_vision": False, "speed": 3
+    },
+    "gpt4free": {
+        "label": "GPT4Free proxy (g4f)", "base": "http://localhost:1337/v1/chat/completions",
+        "model": "gpt-4", "lanes": 2, "requires_key": False,
+        "full_url": True, "supports_vision": False, "speed": 3
+    },
+    "deepseek_web": {
+        "label": "DeepSeek Chat (free)", "base": "https://chat.deepseek.com/api/v0/chat/completions",
+        "model": "deepseek-chat", "lanes": 2, "requires_key": False,
+        "full_url": True, "supports_vision": False, "speed": 4
+    },
 }
 
-PROVIDER_PRIORITY = ["groq", "cerebras", "gemini", "cloudflare", "github", "openrouter", "pollinations"]
+PROVIDER_PRIORITY = ["lmsys_arena", "duckduckgo_chat", "phind", "groq", "cerebras", "gemini", "cloudflare", "github", "openrouter", "huggingface_spaces", "gpt4free", "deepseek_web", "pollinations"]
 
 class Provider:
     def __init__(self, pid, key="", model=None):
